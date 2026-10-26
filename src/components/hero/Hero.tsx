@@ -14,176 +14,48 @@ import { brand, hero } from "@/lib/content";
 import { EASE_LUXE } from "@/lib/motion";
 import { scrollToHash, useLenis } from "@/components/providers/SmoothScroll";
 
-const { frames, chapters } = hero;
-/** Mirrors the `wide` Tailwind variant: landscape screens use the full-frame set, everything else the phone crop. */
-const WIDE_QUERY = "(min-aspect-ratio: 13/10) and (min-width: 768px)";
-/** Portion of the scroll that drives frames; the rest holds the finished dish. */
+const { video, chapters } = hero;
+/** Portion of the scroll over which the progress rail fills. */
 const SCRUB_END = 0.86;
-const BG = "#120a08";
-/** Chapter windows in overall scroll progress, aligned to the footage. */
+/** Chapter windows in overall scroll progress. */
 const CHAPTER_RANGES: [number, number][] = [
-  [0.14, 0.36], // ingredients falling
-  [0.38, 0.58], // flame
-  [0.6, 1.01], // finished kadai
+  [0.14, 0.36],
+  [0.38, 0.58],
+  [0.6, 1.01],
 ];
 
-type Mode = "pending" | "scrub" | "static";
-
-/** Paint one frame: cover (desktop) or a bottom-anchored crop around the kadai (portrait). */
-function paint(ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: number, h: number, portrait: boolean) {
-  const iw = img.naturalWidth;
-  const ih = img.naturalHeight;
-  if (!portrait) {
-    const s = Math.max(w / iw, h / ih);
-    const dw = iw * s;
-    const dh = ih * s;
-    ctx.drawImage(img, (w - dw) * 0.85, (h - dh) * 0.5, dw, dh);
-    return;
-  }
-  // the phone frames are already cropped around the kadai — fit to width, anchor near the bottom
-  const dh = ih * (w / iw);
-  ctx.drawImage(img, 0, h - dh - h * 0.05, w, dh);
-}
-
-/** Draw frame `a`, cross-faded into `b` by `t` — turns 8–12 fps footage into smooth playback. */
-function drawFrame(ctx: CanvasRenderingContext2D, a: HTMLImageElement, b: HTMLImageElement | null, t: number, w: number, h: number) {
-  const portrait = w / h < 1.3;
-  ctx.globalAlpha = 1;
-  ctx.fillStyle = BG;
-  ctx.fillRect(0, 0, w, h);
-  paint(ctx, a, w, h, portrait);
-  if (b && b !== a && t > 0.02) {
-    ctx.globalAlpha = t;
-    paint(ctx, b, w, h, portrait);
-    ctx.globalAlpha = 1;
-  }
-  if (portrait) {
-    // fade the frame's top edge into the ground
-    const dh = a.naturalHeight * (w / a.naturalWidth);
-    const dy = h - dh - h * 0.05;
-    const fade = ctx.createLinearGradient(0, dy, 0, dy + dh * 0.35);
-    fade.addColorStop(0, BG);
-    fade.addColorStop(1, "rgba(18,10,8,0)");
-    ctx.fillStyle = fade;
-    ctx.fillRect(0, dy - 1, w, dh * 0.35 + 1);
-  }
-}
 export default function Hero() {
   const lenis = useLenis();
   const sectionRef = useRef<HTMLElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const [mode, setMode] = useState<Mode>("pending");
-  const [ready, setReady] = useState(false);
-  const [loaded, setLoaded] = useState(0);
+  const [isStatic, setIsStatic] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const [phase, setPhase] = useState(-1); // -1 = brand, 0..2 = chapters
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
 
   useEffect(() => {
-    // Reduced motion, data-saver and very low-memory phones get the still hero instead of a frame scrub.
-    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
-    const still =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      !!nav.connection?.saveData ||
-      (nav.deviceMemory !== undefined && nav.deviceMemory <= 1);
+    // Reduced motion and data-saver visitors get the first frame instead of autoplaying video.
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
     // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only capability check
-    setMode(still ? "static" : "scrub");
+    setIsStatic(window.matchMedia("(prefers-reduced-motion: reduce)").matches || !!nav.connection?.saveData);
   }, []);
 
-  useEffect(() => {
-    if (mode !== "scrub") return;
-    const set = window.matchMedia(WIDE_QUERY).matches ? frames.desktop : frames.mobile;
-    const list: (HTMLImageElement | null)[] = Array.from({ length: set.count }, () => null);
-    imagesRef.current = list;
-    let cancelled = false;
-    let count = 0;
+  // keep the loop inside the clean part of the footage (before its end card)
+  const onTime = () => {
+    const v = videoRef.current;
+    if (v && v.currentTime >= video.to) v.currentTime = video.from;
+  };
 
-    // Load in order with a few parallel workers so the opening frames arrive first.
-    // Start after the intro animation has had a moment, so decoding never competes with it.
-    const queue = list.map((_, i) => i);
-    const worker = async () => {
-      while (queue.length && !cancelled) {
-        const i = queue.shift()!;
-        const img = new window.Image();
-        img.decoding = "async";
-        img.src = set.path(i + 1);
-        try {
-          await img.decode();
-        } catch {
-          continue;
-        }
-        if (cancelled) return;
-        list[i] = img;
-        count++;
-        if (i === 0) setReady(true);
-        if (count % 8 === 0 || count === list.length) setLoaded(count / list.length);
-      }
-    };
-    const start = window.setTimeout(() => {
-      for (let k = 0; k < 3; k++) worker();
-    }, 500);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(start);
-    };
-  }, [mode]);
-
-  // ---- canvas sizing --------------------------------------------------------
-  useEffect(() => {
-    if (mode !== "scrub") return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.round(canvas.clientWidth * dpr);
-      canvas.height = Math.round(canvas.clientHeight * dpr);
-    };
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-    return () => ro.disconnect();
-  }, [mode]);
-
-  // ---- continuous playback: the footage loops by itself, scrolling only changes the copy ----
-  useEffect(() => {
-    if (mode !== "scrub") return;
-    const fps = window.matchMedia(WIDE_QUERY).matches ? 12 : 8; // ~real time for each frame set
-    let raf = 0;
-    let last = 0;
-    let pos = 0;
-    let hold = 0;
-    const tick = (t: number) => {
-      raf = requestAnimationFrame(tick);
-      const dt = Math.min(t - last, 100);
-      last = t;
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
-      const list = imagesRef.current;
-      if (!canvas || !ctx || scrollYProgress.get() >= 0.995) return; // hero scrolled away: stop drawing
-      let n = 0;
-      while (n < list.length && list[n]) n++;
-      if (n < list.length * 0.4) return; // wait for enough frames for a smooth loop
-      if (hold > 0) {
-        hold -= dt;
-        if (hold <= 0) pos = 0;
-      } else {
-        pos += (dt / 1000) * fps;
-        if (pos >= n - 1) {
-          pos = n - 1;
-          hold = 1500; // linger on the finished dish before the next pass
-        }
-      }
-      const i = Math.floor(pos);
-      drawFrame(ctx, list[i]!, list[Math.min(i + 1, n - 1)], pos - i, canvas.width, canvas.height);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [mode, scrollYProgress]);
-
-  // ---- scroll → chapter copy ----------------------------------------------
-  useMotionValueEvent(scrollYProgress, "change", (p) => {    const next = CHAPTER_RANGES.findIndex(([a, b]) => p >= a && p < b);
+  // play only while the hero is on screen
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
+    const v = videoRef.current;
+    if (v && !isStatic) {
+      if (p >= 0.995) v.pause();
+      else if (v.paused) v.play().catch(() => {});
+    }
+    const next = CHAPTER_RANGES.findIndex(([a, b]) => p >= a && p < b);
     setPhase(p < 0.1 ? -1 : next);
   });
 
@@ -196,7 +68,6 @@ export default function Hero() {
   };
 
   const showBrand = phase === -1;
-  const isStatic = mode === "static";
 
   return (
     <section
@@ -205,31 +76,28 @@ export default function Hero() {
       className={`relative bg-[#120a08] ${isStatic ? "h-[100svh]" : "h-[170vh] md:h-[200vh]"}`}
     >
       <div className="sticky top-0 h-[100svh] min-h-[600px] w-full overflow-hidden">
-        {/* First frame / static fallback (also the LCP image). Fade-in only: scaling a full-screen layer janks phones. */}
+        {/* Background video: full-bleed on phones, right-hand panel on landscape screens */}
         <motion.div
-          className="absolute inset-0"
+          className="absolute inset-0 wide:left-[38%]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.1, ease: "easeOut" }}
         >
-          <picture>
-            <source
-              media={WIDE_QUERY}
-              srcSet={frames.desktop.path(isStatic ? frames.desktop.count : 1)}
-            />
-            <img
-              src={frames.mobile.path(isStatic ? frames.mobile.count : 1)}
-              alt="Chicken, red chillies, garlic and spices falling into a black iron kadai in front of a red laterite wall"
-              fetchPriority="high"
-              decoding="async"
-              width={640}
-              height={529}
-              className={`absolute inset-x-0 bottom-[5%] h-auto w-full wide:inset-0 wide:bottom-0 wide:h-full wide:object-cover wide:object-[85%_50%] transition-opacity duration-500 ${
-                ready && !isStatic ? "opacity-0" : "opacity-100"
-              }`}
-            />
-          </picture>
-          {!isStatic && <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />}
+          <video
+            ref={videoRef}
+            src={`${video.src}#t=${video.from + 0.1}`}
+            autoPlay={!isStatic}
+            muted
+            playsInline
+            preload="auto"
+            disablePictureInPicture
+            onTimeUpdate={onTime}
+            onPlaying={() => setPlaying(true)}
+            aria-label="Sizzling spices and slow-cooked dishes from the Raviraj kitchen"
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              playing || isStatic ? "opacity-100" : "opacity-90"
+            }`}
+          />
         </motion.div>
 
         {/* Readability: dark left field (desktop) / top field (mobile) + vignette */}
@@ -404,7 +272,7 @@ export default function Hero() {
             >
               <div className="mx-auto flex h-16 max-w-[1680px] items-center justify-between px-5 md:h-20 md:px-10">
                 <span className="eyebrow flex items-center gap-3 text-[0.6rem] text-sand/70">
-                  {isStatic ? brand.kind : loaded < 1 ? `Preparing the kitchen · ${Math.round(loaded * 100)}%` : "Scroll to cook"}
+                  {isStatic ? brand.kind : "Scroll to explore"}
                 </span>
                 <span className="eyebrow flex items-center gap-4 text-[0.62rem] text-ivory/60">
                   <span className="hidden sm:inline">Scroll</span>

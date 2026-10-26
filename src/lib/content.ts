@@ -67,23 +67,12 @@ export const nav = [
 ];
 
 /**
- * Scroll-scrubbed cooking sequence (Kling AI video → 121 WebP frames, watermark cropped).
- * Scroll drives the frames: ingredients fall into the kadai → flame → finished Chicken Kadai.
+ * Hero: a looping background video ("Sizzle & spice"). `to` stops the loop just before the
+ * footage's end card (a studio logo) so it is never shown.
  */
 export const hero = {
   eyebrow: "Family Restaurant — Gadhinglaj · Ajra",
-  // Two pre-sized sets: desktop (1280w, 61 frames) and phones (kadai-cropped 640w, 41 frames),
-  // so a phone decodes ~40 MB of bitmaps instead of several hundred.
-  frames: {
-    desktop: {
-      path: (i: number) => asset(`/frames/kadai-d/f${String(i).padStart(3, "0")}.webp`),
-      count: 61,
-    },
-    mobile: {
-      path: (i: number) => asset(`/frames/kadai-m/f${String(i).padStart(3, "0")}.webp`),
-      count: 41,
-    },
-  },
+  video: { src: asset("/videos/reels/r1.mp4"), from: 0, to: 14.2 },
   // PLACEHOLDER copy — client to confirm dish names and wording
   chapters: [
     {
@@ -259,12 +248,6 @@ export const menu = {
   eyebrow: "The Menu",
   title: ["Something for", "every *table*."],
   copy: "Thalis for the hungry, biryani for the loyal, Chinese for the kids — a big menu that suits a big family.",
-  // Short reels. `to` stops each one before its end card (a studio / restaurant logo) so it is never shown.
-  reels: [
-    { src: asset("/videos/reels/r1.mp4"), from: 0, to: 14.2, kicker: "Fire & spice", title: "Sizzle", em: "& spice." },
-    { src: asset("/videos/reels/r2.mp4"), from: 0, to: 23, kicker: "From the pan", title: "Rich, hot,", em: "all yours." },
-    { src: asset("/videos/reels/r3.mp4"), from: 0, to: 26.6, kicker: "Every evening", title: "Housefull,", em: "always." },
-  ],
   facts: { rating: "4.3", reviews: "594", price: "₹200–400", tags: "Family-friendly" },
   signature: {
     name: "Chicken Kadai",

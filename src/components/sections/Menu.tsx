@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Reel from "@/components/ui/Reel";
 import { menu } from "@/lib/content";
 import { splitEmphasis } from "@/lib/motion";
 
@@ -66,39 +65,8 @@ export default function Menu() {
           </div>
         </div>
 
-        {/* reels: swipe on a phone, three across on desktop */}
-        <div className="-mx-5 mt-12 md:mx-0 md:mt-20">
-          <div
-            data-lenis-prevent
-            className="scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 md:pb-0"
-          >
-            {menu.reels.map((r, i) => (
-              <figure
-                key={r.src}
-                data-reveal
-                style={{ "--d": `${i * 0.1}s` } as React.CSSProperties}
-                className={`relative w-[70vw] max-w-[340px] shrink-0 snap-center shadow-[0_30px_60px_-30px_rgba(63,16,18,0.55)] md:w-auto md:max-w-none ${
-                  i === 1 ? "md:mt-14" : ""
-                }`}
-              >
-                <Reel src={r.src} from={r.from} to={r.to} label={`${r.title} ${r.em}`} className="aspect-[3/4.4]" />
-                <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-ink/85 via-transparent to-ink/20" />
-                <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 z-20 p-5 text-ivory md:p-7">
-                  <span className="eyebrow flex items-center gap-3 text-[0.58rem] text-champagne">
-                    <span className="tabular-nums text-terracotta">0{i + 1}</span>
-                    {r.kicker}
-                  </span>
-                  <span className="display mt-3 block text-3xl leading-[1.02] md:text-4xl">
-                    {r.title} <em className="font-serif font-light italic text-sand">{r.em}</em>
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-
         {/* category chips */}
-        <div data-reveal className="-mx-5 mt-16 md:mx-0 md:mt-28">
+        <div data-reveal className="-mx-5 mt-12 md:mx-0 md:mt-20">
           <p className="eyebrow mb-5 flex items-center gap-4 px-5 text-[0.6rem] text-ink/50 md:px-0">
             <span className="h-px w-8 bg-ink/25" /> Pick a course
           </p>
