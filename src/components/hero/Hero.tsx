@@ -202,7 +202,7 @@ export default function Hero() {
     <section
       id="top"
       ref={sectionRef}
-      className={`relative bg-[#120a08] ${isStatic ? "h-[100svh]" : "h-[190vh] md:h-[240vh]"}`}
+      className={`relative bg-[#120a08] ${isStatic ? "h-[100svh]" : "h-[170vh] md:h-[200vh]"}`}
     >
       <div className="sticky top-0 h-[100svh] min-h-[600px] w-full overflow-hidden">
         {/* First frame / static fallback (also the LCP image). Fade-in only: scaling a full-screen layer janks phones. */}

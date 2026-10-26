@@ -259,6 +259,12 @@ export const menu = {
   eyebrow: "The Menu",
   title: ["Something for", "every *table*."],
   copy: "Thalis for the hungry, biryani for the loyal, Chinese for the kids — a big menu that suits a big family.",
+  // Short reels. `to` stops each one before its end card (a studio / restaurant logo) so it is never shown.
+  reels: [
+    { src: asset("/videos/reels/r1.mp4"), from: 0, to: 14.2, kicker: "Fire & spice", title: "Sizzle", em: "& spice." },
+    { src: asset("/videos/reels/r2.mp4"), from: 0, to: 23, kicker: "From the pan", title: "Rich, hot,", em: "all yours." },
+    { src: asset("/videos/reels/r3.mp4"), from: 0, to: 26.6, kicker: "Every evening", title: "Housefull,", em: "always." },
+  ],
   facts: { rating: "4.3", reviews: "594", price: "₹200–400", tags: "Family-friendly" },
   signature: {
     name: "Chicken Kadai",

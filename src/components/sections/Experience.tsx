@@ -33,13 +33,15 @@ export default function Experience() {
       revert = () => mm.revert();
     mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
       const distance = () => track.scrollWidth - window.innerWidth;
+      // the walk covers the track in about half the scroll it used to need
+      const scrollLen = () => distance() * 0.5;
       const tween = gsap.to(track, {
         x: () => -distance(),
         ease: "none",
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: () => `+=${distance()}`,
+          end: () => `+=${scrollLen()}`,
           pin: true,
           scrub: 1,
           invalidateOnRefresh: true,

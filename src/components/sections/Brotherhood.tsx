@@ -55,7 +55,7 @@ export default function Brotherhood() {
   });
 
   return (
-    <section ref={ref} className="relative h-[260vh] bg-burgundy-900 md:h-[340vh] text-ivory" aria-label="Brotherhood">
+    <section ref={ref} className="relative h-[220vh] bg-burgundy-900 md:h-[250vh] text-ivory" aria-label="Brotherhood">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         {/* Statement laid over the frame */}
         <motion.div
