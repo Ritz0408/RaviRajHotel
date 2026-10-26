@@ -1,11 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import type Lenis from "lenis";
 
 const LenisContext = createContext<Lenis | null>(null);
 
@@ -19,6 +15,10 @@ export function scrollToHash(lenis: Lenis | null, hash: string) {
   else el.scrollIntoView({ behavior: "smooth" });
 }
 
+/**
+ * Lenis smooths mouse wheels only. Phones and trackpads already scroll natively at full
+ * frame rate, so there it is not loaded at all (no library, no extra rAF loop).
+ */
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   const [lenis, setLenis] = useState<Lenis | null>(null);
 
@@ -29,22 +29,30 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       window.scrollTo(0, 0);
     }
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    const mouse = window.matchMedia("(pointer: fine) and (hover: hover)").matches;
+    if (reduced || !mouse) return;
 
-    const instance = new Lenis({
-      duration: 1.35,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
+    let instance: Lenis | undefined;
+    let raf = 0;
+    let dead = false;
+    import("lenis").then(({ default: LenisCtor }) => {
+      if (dead) return;
+      instance = new LenisCtor({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+      const tick = (time: number) => {
+        instance?.raf(time);
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      setLenis(instance);
     });
-    instance.on("scroll", ScrollTrigger.update);
-    const tick = (time: number) => instance.raf(time * 1000);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- expose the instance once created
-    setLenis(instance);
     return () => {
-      gsap.ticker.remove(tick);
-      instance.destroy();
+      dead = true;
+      cancelAnimationFrame(raf);
+      instance?.destroy();
       setLenis(null);
     };
   }, []);

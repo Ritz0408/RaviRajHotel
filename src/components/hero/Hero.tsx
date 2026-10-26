@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -16,6 +15,8 @@ import { EASE_LUXE } from "@/lib/motion";
 import { scrollToHash, useLenis } from "@/components/providers/SmoothScroll";
 
 const { frames, chapters } = hero;
+/** Mirrors the `wide` Tailwind variant: landscape screens use the full-frame set, everything else the phone crop. */
+const WIDE_QUERY = "(min-aspect-ratio: 13/10) and (min-width: 768px)";
 /** Portion of the scroll that drives frames; the rest holds the finished dish. */
 const SCRUB_END = 0.86;
 const BG = "#120a08";
@@ -28,44 +29,50 @@ const CHAPTER_RANGES: [number, number][] = [
 
 type Mode = "pending" | "scrub" | "static";
 
-/** Draw a frame: cover (desktop) or a bottom-anchored crop around the kadai (portrait). */
-function drawFrame(ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: number, h: number) {
+/** Paint one frame: cover (desktop) or a bottom-anchored crop around the kadai (portrait). */
+function paint(ctx: CanvasRenderingContext2D, img: HTMLImageElement, w: number, h: number, portrait: boolean) {
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
-  ctx.fillStyle = BG;
-  ctx.fillRect(0, 0, w, h);
-
-  if (w / h >= 1.3) {
+  if (!portrait) {
     const s = Math.max(w / iw, h / ih);
     const dw = iw * s;
     const dh = ih * s;
     ctx.drawImage(img, (w - dw) * 0.85, (h - dh) * 0.5, dw, dh);
     return;
   }
-
-  // portrait: keep the kadai whole, anchor it near the bottom, fade its top edge into the ground
-  // visible slice: from just left of the kadai to just past its right handle
-  const regionX = 0.355;
-  const s = w / (iw * 0.625);
-  const dw = iw * s;
-  const dh = ih * s;
-  const dy = h - dh - h * 0.05;
-  ctx.drawImage(img, -iw * regionX * s, dy, dw, dh);
-  const fade = ctx.createLinearGradient(0, dy, 0, dy + dh * 0.35);
-  fade.addColorStop(0, BG);
-  fade.addColorStop(1, "rgba(18,10,8,0)");
-  ctx.fillStyle = fade;
-  ctx.fillRect(0, dy - 1, w, dh * 0.35 + 1);
+  // the phone frames are already cropped around the kadai — fit to width, anchor near the bottom
+  const dh = ih * (w / iw);
+  ctx.drawImage(img, 0, h - dh - h * 0.05, w, dh);
 }
 
+/** Draw frame `a`, cross-faded into `b` by `t` — turns 8–12 fps footage into smooth playback. */
+function drawFrame(ctx: CanvasRenderingContext2D, a: HTMLImageElement, b: HTMLImageElement | null, t: number, w: number, h: number) {
+  const portrait = w / h < 1.3;
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, w, h);
+  paint(ctx, a, w, h, portrait);
+  if (b && b !== a && t > 0.02) {
+    ctx.globalAlpha = t;
+    paint(ctx, b, w, h, portrait);
+    ctx.globalAlpha = 1;
+  }
+  if (portrait) {
+    // fade the frame's top edge into the ground
+    const dh = a.naturalHeight * (w / a.naturalWidth);
+    const dy = h - dh - h * 0.05;
+    const fade = ctx.createLinearGradient(0, dy, 0, dy + dh * 0.35);
+    fade.addColorStop(0, BG);
+    fade.addColorStop(1, "rgba(18,10,8,0)");
+    ctx.fillStyle = fade;
+    ctx.fillRect(0, dy - 1, w, dh * 0.35 + 1);
+  }
+}
 export default function Hero() {
   const lenis = useLenis();
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
-  const drawnRef = useRef(-1);
-  const targetRef = useRef(0);
-  const rafRef = useRef(0);
 
   const [mode, setMode] = useState<Mode>("pending");
   const [ready, setReady] = useState(false);
@@ -75,54 +82,33 @@ export default function Hero() {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
 
   useEffect(() => {
+    // Reduced motion, data-saver and very low-memory phones get the still hero instead of a frame scrub.
+    const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
+    const still =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !!nav.connection?.saveData ||
+      (nav.deviceMemory !== undefined && nav.deviceMemory <= 1);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only capability check
-    setMode(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "static" : "scrub");
+    setMode(still ? "static" : "scrub");
   }, []);
-
-  // ---- frame loading (every 2nd frame on narrow screens) -------------------
-  const render = useCallback(() => {
-    rafRef.current = 0;
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    const list = imagesRef.current;
-    if (!canvas || !ctx || !list.length) return;
-    // nearest loaded frame to the target
-    let idx = targetRef.current;
-    for (let d = 0; d < list.length; d++) {
-      if (list[idx - d]?.complete) { idx -= d; break; }
-      if (list[idx + d]?.complete) { idx += d; break; }
-    }
-    const img = list[idx];
-    if (!img?.complete || idx === drawnRef.current) return;
-    drawnRef.current = idx;
-    drawFrame(ctx, img, canvas.width, canvas.height);
-  }, []);
-
-  const requestDraw = useCallback(() => {
-    if (!rafRef.current) rafRef.current = requestAnimationFrame(render);
-  }, [render]);
 
   useEffect(() => {
     if (mode !== "scrub") return;
-    const narrow = window.innerWidth < 768;
-    const stride = narrow ? 2 : 1;
-    const indices: number[] = [];
-    for (let i = 1; i <= frames.count; i += stride) indices.push(i);
-    if (indices[indices.length - 1] !== frames.count) indices.push(frames.count);
-
-    const list: (HTMLImageElement | null)[] = indices.map(() => null);
+    const set = window.matchMedia(WIDE_QUERY).matches ? frames.desktop : frames.mobile;
+    const list: (HTMLImageElement | null)[] = Array.from({ length: set.count }, () => null);
     imagesRef.current = list;
     let cancelled = false;
     let count = 0;
 
-    // load sequentially in small parallel batches so the opening frames arrive first
-    const queue = indices.map((n, i) => ({ n, i }));
+    // Load in order with a few parallel workers so the opening frames arrive first.
+    // Start after the intro animation has had a moment, so decoding never competes with it.
+    const queue = list.map((_, i) => i);
     const worker = async () => {
       while (queue.length && !cancelled) {
-        const { n, i } = queue.shift()!;
+        const i = queue.shift()!;
         const img = new window.Image();
         img.decoding = "async";
-        img.src = frames.path(n);
+        img.src = set.path(i + 1);
         try {
           await img.decode();
         } catch {
@@ -132,15 +118,17 @@ export default function Hero() {
         list[i] = img;
         count++;
         if (i === 0) setReady(true);
-        if (count % 6 === 0 || count === indices.length) setLoaded(count / indices.length);
-        requestDraw();
+        if (count % 8 === 0 || count === list.length) setLoaded(count / list.length);
       }
     };
-    for (let k = 0; k < 6; k++) worker();
+    const start = window.setTimeout(() => {
+      for (let k = 0; k < 3; k++) worker();
+    }, 500);
     return () => {
       cancelled = true;
+      window.clearTimeout(start);
     };
-  }, [mode, requestDraw]);
+  }, [mode]);
 
   // ---- canvas sizing --------------------------------------------------------
   useEffect(() => {
@@ -148,26 +136,54 @@ export default function Hero() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = Math.round(canvas.clientWidth * dpr);
       canvas.height = Math.round(canvas.clientHeight * dpr);
-      drawnRef.current = -1;
-      requestDraw();
     };
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
     return () => ro.disconnect();
-  }, [mode, requestDraw]);
+  }, [mode]);
 
-  // ---- scroll → frame + chapter -------------------------------------------
-  useMotionValueEvent(scrollYProgress, "change", (p) => {
-    const list = imagesRef.current;
-    if (list.length) {
-      targetRef.current = Math.round(Math.min(1, p / SCRUB_END) * (list.length - 1));
-      requestDraw();
-    }
-    const next = CHAPTER_RANGES.findIndex(([a, b]) => p >= a && p < b);
+  // ---- continuous playback: the footage loops by itself, scrolling only changes the copy ----
+  useEffect(() => {
+    if (mode !== "scrub") return;
+    const fps = window.matchMedia(WIDE_QUERY).matches ? 12 : 8; // ~real time for each frame set
+    let raf = 0;
+    let last = 0;
+    let pos = 0;
+    let hold = 0;
+    const tick = (t: number) => {
+      raf = requestAnimationFrame(tick);
+      const dt = Math.min(t - last, 100);
+      last = t;
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext("2d");
+      const list = imagesRef.current;
+      if (!canvas || !ctx || scrollYProgress.get() >= 0.995) return; // hero scrolled away: stop drawing
+      let n = 0;
+      while (n < list.length && list[n]) n++;
+      if (n < list.length * 0.4) return; // wait for enough frames for a smooth loop
+      if (hold > 0) {
+        hold -= dt;
+        if (hold <= 0) pos = 0;
+      } else {
+        pos += (dt / 1000) * fps;
+        if (pos >= n - 1) {
+          pos = n - 1;
+          hold = 1500; // linger on the finished dish before the next pass
+        }
+      }
+      const i = Math.floor(pos);
+      drawFrame(ctx, list[i]!, list[Math.min(i + 1, n - 1)], pos - i, canvas.width, canvas.height);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [mode, scrollYProgress]);
+
+  // ---- scroll → chapter copy ----------------------------------------------
+  useMotionValueEvent(scrollYProgress, "change", (p) => {    const next = CHAPTER_RANGES.findIndex(([a, b]) => p >= a && p < b);
     setPhase(p < 0.1 ? -1 : next);
   });
 
@@ -186,27 +202,33 @@ export default function Hero() {
     <section
       id="top"
       ref={sectionRef}
-      className={`relative bg-[#120a08] ${isStatic ? "h-[100svh]" : "h-[340vh] md:h-[420vh]"}`}
+      className={`relative bg-[#120a08] ${isStatic ? "h-[100svh]" : "h-[190vh] md:h-[240vh]"}`}
     >
       <div className="sticky top-0 h-[100svh] min-h-[600px] w-full overflow-hidden">
-        {/* First frame / static fallback (also the LCP image) */}
+        {/* First frame / static fallback (also the LCP image). Fade-in only: scaling a full-screen layer janks phones. */}
         <motion.div
           className="absolute inset-0"
-          initial={{ opacity: 0, scale: 1.08 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2.4, ease: EASE_LUXE }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.1, ease: "easeOut" }}
         >
-          <Image
-            src={frames.path(isStatic ? frames.count : 1)}
-            alt="Chicken, red chillies, garlic and spices falling into a black iron kadai in front of a red laterite wall"
-            fill
-            preload
-            unoptimized
-            sizes="100vw"
-            className={`object-cover object-[67%_100%] wide:object-[85%_50%] transition-opacity duration-700 ${
-              ready && !isStatic ? "opacity-0" : "opacity-100"
-            }`}
-          />
+          <picture>
+            <source
+              media={WIDE_QUERY}
+              srcSet={frames.desktop.path(isStatic ? frames.desktop.count : 1)}
+            />
+            <img
+              src={frames.mobile.path(isStatic ? frames.mobile.count : 1)}
+              alt="Chicken, red chillies, garlic and spices falling into a black iron kadai in front of a red laterite wall"
+              fetchPriority="high"
+              decoding="async"
+              width={640}
+              height={529}
+              className={`absolute inset-x-0 bottom-[5%] h-auto w-full wide:inset-0 wide:bottom-0 wide:h-full wide:object-cover wide:object-[85%_50%] transition-opacity duration-500 ${
+                ready && !isStatic ? "opacity-0" : "opacity-100"
+              }`}
+            />
+          </picture>
           {!isStatic && <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />}
         </motion.div>
 

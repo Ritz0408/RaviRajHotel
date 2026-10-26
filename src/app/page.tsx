@@ -5,6 +5,11 @@ import Hero from "@/components/hero/Hero";
 import Story from "@/components/sections/Story";
 import Experience from "@/components/sections/Experience";
 import Brotherhood from "@/components/sections/Brotherhood";
+import Bond from "@/components/sections/Bond";
+import Cricket from "@/components/sections/Cricket";
+import Menu from "@/components/sections/Menu";
+import Cinema from "@/components/sections/Cinema";
+import RevealObserver from "@/components/providers/RevealObserver";
 import Dining from "@/components/sections/Dining";
 import Marquee from "@/components/sections/Marquee";
 import Locations from "@/components/sections/Locations";
@@ -24,7 +29,11 @@ export default function Home() {
         <Story />
         <Experience />
         <Brotherhood />
+        <Bond />
+        <Cricket />
         <Dining />
+        <Menu />
+        <Cinema />
         <Marquee />
         <Locations />
         <Gallery />
@@ -33,6 +42,7 @@ export default function Home() {
         <Visit />
       </main>
       <Footer />
+      <RevealObserver />
     </SmoothScroll>
   );
 }

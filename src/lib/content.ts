@@ -61,6 +61,7 @@ export const nav = [
   { label: "Story", href: "#story" },
   { label: "Experience", href: "#experience" },
   { label: "Dining", href: "#dining" },
+  { label: "Menu", href: "#menu" },
   { label: "Locations", href: "#locations" },
   { label: "Gallery", href: "#gallery" },
 ];
@@ -71,11 +72,17 @@ export const nav = [
  */
 export const hero = {
   eyebrow: "Family Restaurant — Gadhinglaj · Ajra",
+  // Two pre-sized sets: desktop (1280w, 61 frames) and phones (kadai-cropped 640w, 41 frames),
+  // so a phone decodes ~40 MB of bitmaps instead of several hundred.
   frames: {
-    path: (i: number) => asset(`/frames/kadai/f${String(i).padStart(3, "0")}.webp`),
-    count: 121,
-    width: 1600,
-    height: 826,
+    desktop: {
+      path: (i: number) => asset(`/frames/kadai-d/f${String(i).padStart(3, "0")}.webp`),
+      count: 61,
+    },
+    mobile: {
+      path: (i: number) => asset(`/frames/kadai-m/f${String(i).padStart(3, "0")}.webp`),
+      count: 41,
+    },
   },
   // PLACEHOLDER copy — client to confirm dish names and wording
   chapters: [
@@ -190,6 +197,46 @@ export const brotherhood = {
   image: media.cricketLawn,
 };
 
+/** PLACEHOLDER storytelling — poetic, no dates or facts invented; client to confirm the family's own words. */
+export const bond = {
+  eyebrow: "The Bond",
+  title: ["Before the restaurant,", "there was a *brother*."],
+  marathi: "भावाचं प्रेम",
+  beats: [
+    "Long before the first table was laid, there were two brothers, a bat and a stretch of open ground.",
+    "One would bowl. The other would bat. Neither ever kept count of who carried whom.",
+    "When the light went, they walked home the same way, sharing whatever was left of the day.",
+  ],
+  closing: "Hotel Raviraj is that walk home — made into a place.",
+  quote: "A brother is the one who stays at the other end of the pitch.",
+};
+
+export const cricket = {
+  eyebrow: "The Innings",
+  title: ["Cricket runs in", "the *blood*."],
+  copy: "From the photographs in the dining hall to the batsmen frozen mid-stroke on the lawn, the game is everywhere at Raviraj — because it is where the brothers grew up.",
+  moments: [
+    { title: "Evenings on the maidan", note: "Golden hour, one bat, far too many fielders.", icon: "sun" },
+    { title: "The last over", note: "Six to win. Nobody breathing. Everybody shouting.", icon: "ball" },
+    { title: "Two at the crease", note: "A partnership is just trust at running speed.", icon: "stumps" },
+    { title: "The team dinner", note: "Every match ends at a long, loud table.", icon: "plate" },
+  ],
+  scoreboard: [
+    { label: "Brothers", value: "2" },
+    { label: "Locations", value: "3" },
+    { label: "Overs", value: "∞" },
+  ],
+  result: "Result: a full house, every evening.",
+  image: media.cricketLawn,
+};
+
+export const cinema = {
+  eyebrow: "Evenings at Raviraj",
+  words: ["EVENINGS", "AT RAVIRAJ"],
+  copy: "When the sun goes down, the hall fills up — families, friends and old regulars, all under one tiled roof.",
+  poster: media.diningHall,
+};
+
 export const dining = {
   eyebrow: "Dining",
   title: ["Come hungry,", "leave as *family*."],
@@ -201,6 +248,77 @@ export const dining = {
     { name: "Celebrations", note: "Birthdays · Team dinners · Gatherings" },
   ],
   image: media.diningHall,
+};
+
+/**
+ * Menu highlights, read from the restaurant's menu photographs on Google.
+ * PLACEHOLDER — prices intentionally left out and the list is partial; client to supply the full menu.
+ * `v: true` = vegetarian.
+ */
+export const menu = {
+  eyebrow: "The Menu",
+  title: ["Something for", "every *table*."],
+  copy: "Thalis for the hungry, biryani for the loyal, Chinese for the kids — a big menu that suits a big family.",
+  facts: { rating: "4.3", reviews: "594", price: "₹200–400", tags: "Family-friendly" },
+  signature: {
+    name: "Chicken Kadai",
+    note: "Iron kadai, high flame, served sizzling — the dish from our opening reel.",
+    image: asset("/frames/kadai-d/f061.webp"),
+  },
+  categories: [
+    {
+      id: "thali",
+      label: "Thalis",
+      items: [
+        { name: "Raviraj Brother's Thali", note: "The house special, made to share", star: true },
+        { name: "Raviraj Special Mutton Thali" },
+        { name: "Mutton Khanda Thali" },
+        { name: "Mutton Pav Thali" },
+      ],
+    },
+    {
+      id: "biryani",
+      label: "Biryani",
+      items: [
+        { name: "Chicken Biryani" },
+        { name: "Chicken Hyderabadi Biryani" },
+        { name: "Mutton Biryani" },
+        { name: "Egg Biryani" },
+        { name: "Veg Biryani", v: true },
+      ],
+    },
+    {
+      id: "main",
+      label: "Main Course",
+      items: [
+        { name: "Chicken Kadai", star: true },
+        { name: "Paneer Butter Masala", v: true },
+        { name: "Paneer Kadhai", v: true },
+        { name: "Paneer Handi", v: true },
+        { name: "Kaju Masala", v: true },
+      ],
+    },
+    {
+      id: "chinese",
+      label: "Rice & Noodles",
+      items: [
+        { name: "Veg Fried Rice", v: true },
+        { name: "Veg Schezwan Rice", v: true },
+        { name: "Chicken Fried Rice" },
+        { name: "Chicken Schezwan Rice" },
+        { name: "Chicken Hakka Noodles" },
+        { name: "Egg Fried Rice" },
+      ],
+    },
+    {
+      id: "soup",
+      label: "Soups",
+      items: [
+        { name: "Veg Manchow Soup", v: true },
+        { name: "Chicken Manchow Soup" },
+      ],
+    },
+  ],
 };
 
 export const marquee = ["Family", "Brotherhood", "Flavour", "Tradition", "Togetherness", "Celebration"];

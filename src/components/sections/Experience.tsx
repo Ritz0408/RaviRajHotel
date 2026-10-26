@@ -2,14 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import RevealLines from "@/components/ui/RevealLines";
 import RevealImage from "@/components/ui/RevealImage";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { experience } from "@/lib/content";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Desktop: the section pins and the four moments travel horizontally, each
@@ -26,7 +22,15 @@ export default function Experience() {
     const track = trackRef.current;
     if (!section || !track) return;
 
-    const mm = gsap.matchMedia();
+    // The pinned horizontal walk is desktop-only, so gsap is fetched only there.
+    if (!window.matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)").matches) return;
+    let revert = () => {};
+    let dead = false;
+    Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(([{ gsap }, { ScrollTrigger }]) => {
+      if (dead) return;
+      gsap.registerPlugin(ScrollTrigger);
+      const mm = gsap.matchMedia();
+      revert = () => mm.revert();
     mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
       const distance = () => track.scrollWidth - window.innerWidth;
       const tween = gsap.to(track, {
@@ -72,7 +76,11 @@ export default function Experience() {
         });
       });
     });
-    return () => mm.revert();
+    });
+    return () => {
+      dead = true;
+      revert();
+    };
   }, []);
 
   return (

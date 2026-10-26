@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -55,7 +55,13 @@ export default function RevealImage({
   // Native lazy-loading can miss images that start clipped, so load explicitly when near.
   const near = useInView(ref, { once: true, margin: "600px 0px" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const travel = reduced ? 0 : parallax * 100;
+  // Parallax only where there is room and a pointer-class GPU; phones just get the reveal.
+  const [roomy, setRoomy] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only capability check
+    setRoomy(window.matchMedia("(min-width: 768px)").matches);
+  }, []);
+  const travel = reduced || !roomy ? 0 : parallax * 100;
   const y = useTransform(scrollYProgress, [0, 1], [`-${travel}%`, `${travel}%`]);
 
   return (
@@ -78,9 +84,9 @@ export default function RevealImage({
       >
         <motion.div
           className="absolute inset-0"
-          initial={reduced ? false : { scale: 1.18 }}
+          initial={reduced ? false : { scale: 1.1 }}
           animate={inView ? { scale: 1 } : undefined}
-          transition={{ duration: 2.2, ease: EASE_LUXE, delay }}
+          transition={{ duration: 1.6, ease: EASE_LUXE, delay }}
         >
           <Image
             src={src}
@@ -91,8 +97,10 @@ export default function RevealImage({
             preload={preload}
             loading={preload || near ? "eager" : "lazy"}
             style={{ objectPosition: position }}
-            className="object-cover [filter:brightness(0.93)_contrast(1.06)_saturate(0.94)_sepia(0.07)]"
+            className="object-cover"
           />
+          {/* warm grade as a flat overlay — cheaper than a CSS filter on a moving image */}
+          <div className="absolute inset-0 bg-[#3a1a0c]/[0.12] mix-blend-multiply" />
         </motion.div>
       </motion.div>
       {/* gentle vignette so daylight photographs sit in the dusk palette */}

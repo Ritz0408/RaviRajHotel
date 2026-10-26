@@ -4,29 +4,12 @@ import { useRef } from "react";
 import Image from "next/image";
 import {
   motion,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useTransform,
-  type MotionValue,
 } from "framer-motion";
 import { brand, brotherhood } from "@/lib/content";
-
-function Word({
-  word,
-  progress,
-  range,
-}: {
-  word: string;
-  progress: MotionValue<number>;
-  range: [number, number];
-}) {
-  const opacity = useTransform(progress, range, [0.14, 1]);
-  return (
-    <motion.span style={{ opacity }} className="mr-[0.28em] inline-block">
-      {word}
-    </motion.span>
-  );
-}
 
 /**
  * A tall scroll-scene with a sticky stage:
@@ -59,8 +42,20 @@ export default function Brotherhood() {
   const end = 0.82;
   const step = (end - start) / words.length;
 
+  // one scroll handler lights the words (instead of ~60 separate motion values)
+  const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const lit = useRef(-1);
+  useMotionValueEvent(p, "change", (v) => {
+    const n = Math.max(-1, Math.min(words.length - 1, Math.floor((v - start) / step)));
+    if (n === lit.current) return;
+    lit.current = n;
+    wordRefs.current.forEach((el, i) => {
+      if (el) el.style.opacity = i <= n ? "1" : "0.14";
+    });
+  });
+
   return (
-    <section ref={ref} className="relative h-[420vh] bg-burgundy-900 text-ivory" aria-label="Brotherhood">
+    <section ref={ref} className="relative h-[260vh] bg-burgundy-900 md:h-[340vh] text-ivory" aria-label="Brotherhood">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         {/* Statement laid over the frame */}
         <motion.div
@@ -100,9 +95,18 @@ export default function Brotherhood() {
           <span lang="mr" className="mb-8 font-marathi text-xl text-sand/80">
             {brand.marathi} — बंधुप्रेम
           </span>
-          <p className="display max-w-[24ch] text-[clamp(1.9rem,4.2vw,4.4rem)] leading-[1.12]">
+          <p className="display max-w-[24ch] text-[clamp(1.55rem,4.2vw,4.4rem)] leading-[1.15]">
             {words.map((w, i) => (
-              <Word key={i} word={w} progress={p} range={[start + i * step, start + (i + 1) * step]} />
+              <span
+                key={i}
+                ref={(el) => {
+                  wordRefs.current[i] = el;
+                }}
+                style={{ opacity: 0.14 }}
+                className="mr-[0.28em] inline-block transition-opacity duration-300"
+              >
+                {w}
+              </span>
             ))}
           </p>
           <motion.ul

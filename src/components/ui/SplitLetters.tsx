@@ -21,9 +21,9 @@ export default function SplitLetters({ text, play, className = "", delay = 0, st
           key={i}
           aria-hidden
           className="inline-block will-change-transform"
-          initial={reduced ? { opacity: 0 } : { y: "110%", opacity: 0, filter: "blur(12px)" }}
-          animate={play ? { y: "0%", opacity: 1, filter: "blur(0px)" } : undefined}
-          transition={{ duration: 1.5, ease: EASE_LUXE, delay: delay + i * stagger }}
+          initial={reduced ? { opacity: 0 } : { y: "110%", opacity: 0 }}
+          animate={play ? { y: "0%", opacity: 1 } : undefined}
+          transition={{ duration: 1.1, ease: EASE_LUXE, delay: delay + i * stagger }}
         >
           {ch === " " ? " " : ch}
         </motion.span>

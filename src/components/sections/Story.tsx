@@ -112,7 +112,7 @@ export default function Story() {
       id="story"
       ref={ref}
       style={{ clipPath }}
-      className="laterite relative z-10 h-[420vh] text-ivory"
+      className="laterite relative z-10 h-[300vh] text-ivory md:h-[340vh]"
       aria-label={story.eyebrow}
     >
       <div className="sticky top-0 flex h-[100svh] min-h-[640px] flex-col overflow-hidden">
