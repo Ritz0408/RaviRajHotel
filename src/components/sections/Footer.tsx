@@ -13,12 +13,12 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden bg-ink pt-24 text-ivory">
+    <footer className="relative overflow-hidden bg-ink pt-14 text-ivory md:pt-20">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
-        <div className="mb-16 text-raviraj">
+        <div className="mb-10 text-raviraj md:mb-14">
           <PatternRule className="opacity-70" />
         </div>
-        <div className="grid gap-14 md:grid-cols-12">
+        <div className="grid gap-8 md:grid-cols-12 md:gap-6">
           <div className="md:col-span-4">
             <p className="display text-4xl leading-tight">
               The Bonding of <em className="italic text-sand">Brother&apos;s Love</em>
@@ -57,7 +57,7 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-20 flex flex-col justify-between gap-4 border-t border-ivory/10 py-6 text-xs text-sand/50 sm:flex-row">
+        <div className="mt-10 flex flex-col justify-between gap-4 border-t border-ivory/10 py-6 text-xs text-sand/50 sm:flex-row md:mt-14">
           <span>© {new Date().getFullYear()} Hotel Raviraj. All rights reserved.</span>
           <a href="#top" onClick={go("#top")} className="eyebrow text-[0.6rem] hover:text-ivory">
             Back to top ↑
@@ -67,9 +67,9 @@ export default function Footer() {
 
       <motion.p
         aria-hidden
-        className="display pointer-events-none select-none whitespace-nowrap text-center text-[25vw] leading-[0.72] text-raviraj/80"
-        initial={{ y: "35%" }}
-        whileInView={{ y: "12%" }}
+        className="display pointer-events-none select-none whitespace-nowrap pb-[0.08em] text-center text-[25vw] leading-[0.95] text-raviraj/80"
+        initial={{ y: "30%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
       >
