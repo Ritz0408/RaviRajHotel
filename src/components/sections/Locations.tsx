@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import RevealLines from "@/components/ui/RevealLines";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitLetters from "@/components/ui/SplitLetters";
+import DirectionLinks from "@/components/ui/DirectionLinks";
 import { locations } from "@/lib/content";
 import { EASE_CURTAIN, EASE_LUXE } from "@/lib/motion";
 
@@ -16,9 +17,7 @@ function ExploreCta({ loc }: { loc: Location }) {
     return <span className="eyebrow inline-flex items-center gap-3 text-sand/60">Coming soon</span>;
   }
   return (
-    <a href={loc.maps} target="_blank" rel="noreferrer" className="btn-primary eyebrow" data-cursor="Open">
-      Explore location <span aria-hidden>↗</span>
-    </a>
+    <DirectionLinks maps={loc.maps} appleMaps={loc.appleMaps} label="Explore location" className="btn-primary eyebrow" cursor="Open" />
   );
 }
 

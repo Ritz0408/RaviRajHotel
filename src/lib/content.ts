@@ -55,6 +55,61 @@ export const brand = {
   tagline: "The Bonding of Brother's Love",
   kind: "Family Restaurant",
   kindMarathi: "फॅमिली रेस्टॉरंट",
+  // The restaurant's own slogan, as given by the owners.
+  slogan: { mr: "यायला लागतंय, खायला लागतंय", en: "You have to come. You have to eat." },
+};
+
+/**
+ * Recipe reels from the Raviraj kitchen. `to` stops each loop before the reel's closing logo card
+ * (only Murg Musallam has one, from 18.8s). Spice level / notes are PLACEHOLDERS for the client to confirm.
+ */
+export const recipes = {
+  eyebrow: "Raviraj Recipe Corner",
+  eyebrowMr: "रविराज किचन",
+  title: ["Watch it *cooked*.", "Then taste it."],
+  copy: "Real flame, iron kadai, no shortcuts. Four dishes, straight from our kitchen to your screen — and then to your table.",
+  items: [
+    {
+      id: "kharda",
+      src: asset("/videos/recipes/chicken-kharda.mp4"),
+      from: 0,
+      to: 36.4,
+      mr: "स्पेशल चिकन खर्डा",
+      en: "Special Chicken Kharda",
+      note: "Fiery, dry-roasted and unapologetic — the Kolhapuri kharda, thrown on a roaring flame.",
+      heat: 5,
+    },
+    {
+      id: "maratha",
+      src: asset("/videos/recipes/veg-maratha.mp4"),
+      from: 0,
+      to: 19.4,
+      mr: "व्हेज मराठा",
+      en: "Veg Maratha",
+      note: "A thick, earthy Maharashtrian-style veg masala with a proper kick.",
+      heat: 3,
+    },
+    {
+      id: "musallam",
+      src: asset("/videos/recipes/murgh-musallam.mp4"),
+      from: 0,
+      to: 18.4,
+      mr: "मुर्ग मुसल्लम",
+      en: "Murgh Musallam",
+      note: "Rich, royal and slow-simmered — the dish for a celebration table.",
+      heat: 2,
+    },
+    {
+      id: "biryani",
+      src: asset("/videos/recipes/chicken-biryani.mp4"),
+      from: 0,
+      to: 24,
+      mr: "चिकन बिर्याणी",
+      en: "Chicken Biryani",
+      note: "Fragrant rice, whole spices and tender chicken, steamed together.",
+      heat: 3,
+    },
+  ],
 };
 
 export const nav = [
@@ -62,6 +117,7 @@ export const nav = [
   { label: "Experience", href: "#experience" },
   { label: "Dining", href: "#dining" },
   { label: "Menu", href: "#menu" },
+  { label: "Recipes", href: "#recipes" },
   { label: "Locations", href: "#locations" },
   { label: "Gallery", href: "#gallery" },
 ];
@@ -317,7 +373,7 @@ export const menu = {
   ],
 };
 
-export const marquee = ["Family", "Brotherhood", "Flavour", "Tradition", "Togetherness", "Celebration"];
+export const marquee = ["यायला लागतंय", "Family", "खायला लागतंय", "Brotherhood", "Flavour", "Tradition", "Togetherness", "Celebration"];
 
 export const locations = [
   {
@@ -325,10 +381,11 @@ export const locations = [
     index: "01",
     place: "Gijawane",
     town: "Gadhinglaj",
-    address: ["Gijawane, Gadhinglaj", "Maharashtra 416502"],
+    address: ["Gijawane, NH 548H, Gadhinglaj", "Maharashtra 416502"],
     copy: "Red arches, cricket on the lawn and a hall that fills up every evening.",
     media: media.entranceArch, // client to confirm which photograph belongs to which branch
-    maps: "https://www.google.com/maps/search/?api=1&query=Hotel+Raviraj+Gijawane+Gadhinglaj+416502",
+    maps: "https://maps.app.goo.gl/o6bEr1oTP6wx4zAG6",
+    appleMaps: "https://maps.apple.com/place?map=hybrid&address=NH%20548H%2C%20Gadhinglaj%2C%20416502%2C%20Maharashtra%2C%20India&coordinate=16.215489%2C74.342318&name=Hotel%20Raviraj",
     comingSoon: false,
   },
   {
@@ -339,7 +396,8 @@ export const locations = [
     address: ["Ajra, Madilage", "Maharashtra 416505"],
     copy: "The same welcome, the same table, the same bond — on the road to Ajra.",
     media: media.villageArch, // client to confirm which photograph belongs to which branch
-    maps: "https://www.google.com/maps/search/?api=1&query=Hotel+Raviraj+Ajra+Madilage+416505",
+    maps: "https://maps.app.goo.gl/2uhu4CTD37zSAxNc9",
+    appleMaps: null as string | null,
     comingSoon: false,
   },
   {
@@ -351,6 +409,7 @@ export const locations = [
     copy: "A new home for the family is on its way.",
     media: media.redWalls,
     maps: null,
+    appleMaps: null,
     comingSoon: true,
   },
 ];

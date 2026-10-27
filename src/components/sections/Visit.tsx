@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import RevealLines from "@/components/ui/RevealLines";
+import DirectionLinks from "@/components/ui/DirectionLinks";
 import { locations, visit } from "@/lib/content";
 import { EASE_LUXE } from "@/lib/motion";
 
@@ -72,14 +73,14 @@ export default function Visit() {
                       {l.address.join(", ")}
                     </address>
                     {l.maps && (
-                      <a
-                        href={l.maps}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={`${i === 0 ? "btn-primary" : "btn-ghost"} eyebrow mt-7`}
-                      >
-                        Get directions <span aria-hidden>↗</span>
-                      </a>
+                      <div className="mt-7">
+                        <DirectionLinks
+                          maps={l.maps}
+                          appleMaps={l.appleMaps}
+                          label="Get directions"
+                          className={`${i === 0 ? "btn-primary" : "btn-ghost"} eyebrow`}
+                        />
+                      </div>
                     )}
                   </motion.div>
                 ))}

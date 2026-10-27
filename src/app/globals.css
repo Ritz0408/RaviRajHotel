@@ -239,6 +239,17 @@ html.lenis body {
   transform: scale(0.94);
 }
 
+/* Recipe corner: embers rise and fade (transform + opacity only; paused off screen via .live-scene) */
+.ember {
+  opacity: 0;
+  animation: ember 6s ease-out infinite;
+}
+@keyframes ember {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+  12% { opacity: 0.9; }
+  100% { transform: translate3d(var(--dx, 14px), -62vh, 0) scale(0.2); opacity: 0; }
+}
+
 /* Brotherhood badge: slow, transform-only turn */
 .badge-spin {
   animation: spin 22s linear infinite;

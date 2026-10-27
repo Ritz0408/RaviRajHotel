@@ -8,6 +8,7 @@ import Brotherhood from "@/components/sections/Brotherhood";
 import Bond from "@/components/sections/Bond";
 import Cricket from "@/components/sections/Cricket";
 import Menu from "@/components/sections/Menu";
+import RecipeCorner from "@/components/sections/RecipeCorner";
 import Cinema from "@/components/sections/Cinema";
 import RevealObserver from "@/components/providers/RevealObserver";
 import Dining from "@/components/sections/Dining";
@@ -33,6 +34,7 @@ export default function Home() {
         <Cricket />
         <Dining />
         <Menu />
+        <RecipeCorner />
         <Cinema />
         <Marquee />
         <Locations />

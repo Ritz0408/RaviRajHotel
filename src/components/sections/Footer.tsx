@@ -26,6 +26,9 @@ export default function Footer() {
             <p lang="mr" className="mt-4 font-marathi text-xl text-sand/70">
               {brand.marathi} · {brand.kindMarathi}
             </p>
+            <p lang="mr" className="mt-6 border-l-2 border-terracotta pl-4 font-marathi text-2xl text-champagne">
+              {brand.slogan.mr}
+            </p>
           </div>
 
           {locations.map((l) => (

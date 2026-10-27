@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { marquee } from "@/lib/content";
 
+const isMr = (w: string) => /[\u0900-\u097F]/.test(w);
+
 /** Two counter-drifting lines of words, driven by scroll — no autoplay. */
 export default function Marquee() {
   const ref = useRef<HTMLDivElement>(null);
@@ -17,7 +19,7 @@ export default function Marquee() {
       <motion.div style={{ x: x1 }} className="flex w-max items-center gap-10 whitespace-nowrap">
         {row.map((w, i) => (
           <span key={i} className="flex items-center gap-10">
-            <span className="display text-[clamp(3rem,8vw,8rem)] italic">{w}</span>
+            <span className={`display text-[clamp(3rem,8vw,8rem)] ${isMr(w) ? "font-marathi not-italic leading-[1.15]" : "italic"}`}>{w}</span>
             <span className="h-2 w-2 rotate-45 bg-terracotta" />
           </span>
         ))}
@@ -25,7 +27,7 @@ export default function Marquee() {
       <motion.div style={{ x: x2 }} className="mt-2 flex w-max items-center gap-10 whitespace-nowrap">
         {row.map((w, i) => (
           <span key={i} className="flex items-center gap-10">
-            <span className="display text-[clamp(3rem,8vw,8rem)] text-transparent [-webkit-text-stroke:1px_rgba(243,235,223,0.35)]">
+            <span className={`display text-[clamp(3rem,8vw,8rem)] text-transparent [-webkit-text-stroke:1px_rgba(243,235,223,0.35)] ${isMr(w) ? "font-marathi leading-[1.15]" : ""}`}>
               {w}
             </span>
             <span className="h-2 w-2 rotate-45 border border-sand/40" />

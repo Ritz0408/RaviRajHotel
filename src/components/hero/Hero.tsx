@@ -120,6 +120,15 @@ export default function Hero() {
             lines={["The Bonding of *Brother's Love*"]}
             className="display mt-8 text-[clamp(1.75rem,2.6vw,2.6rem)] text-ivory/95"
           />
+          <motion.p
+            lang="mr"
+            className="mt-5 inline-block border-l-2 border-terracotta pl-4 font-marathi text-[1.35rem] leading-snug text-champagne md:text-3xl"
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: EASE_LUXE, delay: 1.0 }}
+          >
+            {brand.slogan.mr}
+          </motion.p>
           <motion.div
             className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8"
             initial={{ opacity: 0, y: 16 }}
