@@ -39,7 +39,7 @@ function Icon({ name }: { name: IconName }) {
 
 export default function Cricket() {
   return (
-    <section id="cricket" className="relative overflow-hidden bg-ink py-28 text-ivory md:py-44" aria-label={cricket.eyebrow}>
+    <section id="cricket" className="relative overflow-hidden bg-ink pb-8 pt-28 text-ivory md:pb-12 md:pt-44" aria-label={cricket.eyebrow}>
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
         <span data-reveal className="eyebrow mb-10 flex items-center gap-4 text-terracotta md:mb-14">
           <span className="h-px w-10 bg-terracotta" />

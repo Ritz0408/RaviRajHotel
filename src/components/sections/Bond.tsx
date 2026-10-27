@@ -39,10 +39,6 @@ export default function Bond() {
           ))}
         </h2>
 
-        <p data-reveal lang="mr" className="mt-6 font-marathi text-2xl text-sand md:text-3xl">
-          {bond.marathi}
-        </p>
-
         <div className="mt-14 grid gap-14 md:mt-24 md:grid-cols-12 md:gap-6">
           {/* the film */}
           <div className="md:col-span-5">

@@ -8,7 +8,7 @@ import { EASE_LUXE } from "@/lib/motion";
 
 export default function Dining() {
   return (
-    <section id="dining" className="relative overflow-hidden bg-ink pb-10 pt-28 text-ivory md:pb-16 md:pt-44">
+    <section id="dining" className="relative overflow-hidden bg-ink pb-10 pt-14 text-ivory md:pb-16 md:pt-24">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
         <SectionLabel index="02" label={dining.eyebrow} className="mb-14 text-sand md:mb-20" />
 

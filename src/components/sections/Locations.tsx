@@ -57,7 +57,7 @@ export default function Locations() {
   }, []);
 
   return (
-    <section id="locations" className="relative overflow-hidden bg-burgundy py-28 text-ivory md:py-40">
+    <section id="locations" className="laterite relative overflow-hidden py-28 text-ivory md:py-40">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
         <SectionLabel index="03" label="Discover our locations" className="mb-12 text-sand" />
         <div className="mb-14 flex flex-col justify-between gap-8 md:mb-20 lg:flex-row lg:items-end">
