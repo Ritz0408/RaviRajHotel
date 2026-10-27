@@ -2,15 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import {
-  animate,
-  motion,
-  useInView,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { animate, motion, useInView, useReducedMotion } from "framer-motion";
 import RevealLines from "@/components/ui/RevealLines";
 import SectionLabel from "@/components/ui/SectionLabel";
 import PatternRule from "@/components/ui/PatternRule";
@@ -92,17 +84,23 @@ export default function Story() {
   const [active, setActive] = useState(0);
   const live = useInView(ref, { margin: "0px 0px -20% 0px" });
 
-  const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  useMotionValueEvent(p, "change", (v) => {
-    setActive(Math.min(chapters.length - 1, Math.max(0, Math.floor(v * chapters.length * 0.999))));
-  });
-  const fill = useTransform(p, [0, 1], [0, 1]);
+  const timer = useRef<number | undefined>(undefined);
 
-  // entrance: the red panel widens to full bleed as it rises over the hero
-  const { scrollYProgress: enter } = useScroll({ target: ref, offset: ["start end", "start start"] });
-  const inset = useTransform(enter, [0, 1], [reduced ? 0 : 5, 0]);
-  const clipPath = useTransform(inset, (v) => `inset(0% ${v}% 0% ${v}%)`);
-
+  // chapters advance on their own while the section is on screen — no scroll-jacking
+  const startTimer = () => {
+    window.clearInterval(timer.current);
+    timer.current = window.setInterval(() => setActive((a) => (a + 1) % chapters.length), 6000);
+  };
+  useEffect(() => {
+    if (!live || reduced) return;
+    startTimer();
+    return () => window.clearInterval(timer.current);
+  }, [live, reduced]);
+  const pick = (i: number) => {
+    setActive(i);
+    startTimer();
+  };
+  const fill = (active + 1) / chapters.length;
   if (reduced) return <StoryStatic />;
 
   const c = chapters[active];
@@ -111,11 +109,10 @@ export default function Story() {
     <motion.section
       id="story"
       ref={ref}
-      style={{ clipPath }}
-      className="laterite relative z-10 h-[200vh] text-ivory md:h-[240vh]"
+      className="laterite relative z-10 text-ivory"
       aria-label={story.eyebrow}
     >
-      <div className="sticky top-0 flex h-[100svh] min-h-[640px] flex-col overflow-hidden">
+      <div className="relative flex min-h-[100svh] flex-col overflow-hidden">
         {/* giant Marathi watermark */}
         <div
           lang="mr"
@@ -214,11 +211,11 @@ export default function Story() {
           {/* ---- Timeline ---- */}
           <div className="mt-6 md:mt-8">
             <div className="relative h-px bg-ivory/20">
-              <motion.span style={{ scaleX: fill }} className="absolute inset-0 origin-left bg-champagne" />
+              <span style={{ transform: `scaleX(${fill})` }} className="absolute inset-0 origin-left bg-champagne transition-transform duration-700 ease-[var(--ease-luxe)]" />
             </div>
             <ol className="mt-4 grid grid-cols-4">
               {chapters.map((ch, i) => (
-                <li key={ch.label} className="relative">
+                <li key={ch.label} className="relative"><button type="button" onClick={() => pick(i)} aria-label={ch.label} className="absolute -top-8 left-0 right-0 h-10" />
                   <span
                     className={`absolute -top-[1.32rem] left-0 h-2.5 w-2.5 rotate-45 border transition-colors duration-500 ${
                       i <= active ? "border-champagne bg-champagne" : "border-ivory/40 bg-[#6a1c15]"

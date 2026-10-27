@@ -239,6 +239,21 @@ html.lenis body {
   transform: scale(0.94);
 }
 
+/* Passage: the container only triggers; each word fades up on its own delay (--d) */
+.reveal-ready [data-reveal="words"] {
+  transition: none;
+}
+.reveal-ready [data-reveal="words"]:not(.is-in) {
+  opacity: 1;
+  transform: none;
+}
+.reveal-ready [data-reveal="words"] .word {
+  transition: opacity 0.7s var(--ease-luxe) var(--d, 0s);
+}
+.reveal-ready [data-reveal="words"]:not(.is-in) .word {
+  opacity: 0.12;
+}
+
 /* ---- Cricket: running between the wickets ----
    Everything animates transform only, and pauses while the scene is off screen (data-live="false"). */
 .cricket-scene[data-live="false"] * {
