@@ -9,7 +9,7 @@ export default function Gallery() {
   return (
     <section id="gallery" className="relative overflow-hidden bg-ink py-28 text-ivory md:py-44">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
-        <SectionLabel index="05" label="Gallery" className="mb-12 text-sand" />
+        <SectionLabel index="04" label="Gallery" className="mb-12 text-sand" />
         <div className="mb-16 grid gap-8 md:mb-28 md:grid-cols-12">
           <RevealLines
             lines={["Moments", "at *Raviraj*."]}

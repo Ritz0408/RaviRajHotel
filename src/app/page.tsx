@@ -3,7 +3,6 @@ import Nav from "@/components/nav/Nav";
 import Cursor from "@/components/ui/Cursor";
 import Hero from "@/components/hero/Hero";
 import Story from "@/components/sections/Story";
-import Brotherhood from "@/components/sections/Brotherhood";
 import Bond from "@/components/sections/Bond";
 import Cricket from "@/components/sections/Cricket";
 import RecipeCorner from "@/components/sections/RecipeCorner";
@@ -24,7 +23,6 @@ export default function Home() {
       <main>
         <Hero />
         <RecipeCorner />
-        <Brotherhood />
         <Bond />
         <Cricket />
         <Dining />

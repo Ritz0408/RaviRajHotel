@@ -250,11 +250,6 @@ html.lenis body {
   100% { transform: translate3d(var(--dx, 14px), -62vh, 0) scale(0.2); opacity: 0; }
 }
 
-/* Brotherhood badge: slow, transform-only turn */
-.badge-spin {
-  animation: spin 22s linear infinite;
-}
-
 /* Passage: the container only triggers; each word fades up on its own delay (--d) */
 .reveal-ready [data-reveal="words"] {
   transition: none;

@@ -36,7 +36,7 @@ export default function Visit() {
 
         <div className="relative mx-auto flex min-h-[100svh] max-w-[1680px] flex-col justify-between px-5 py-24 md:px-10 md:py-28">
           <span className="eyebrow flex items-center gap-4 text-sand">
-            <span className="h-px w-10 bg-terracotta" /> 06 — {visit.eyebrow}
+            <span className="h-px w-10 bg-terracotta" /> 05 — {visit.eyebrow}
           </span>
 
           <div>

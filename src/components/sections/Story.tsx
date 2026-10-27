@@ -128,7 +128,7 @@ export default function Story() {
         </div>
 
         <div className="relative mx-auto flex w-full max-w-[1680px] flex-1 flex-col px-5 pb-6 pt-24 md:px-10 md:pb-10 md:pt-28">
-          <SectionLabel index="07" label={story.eyebrow} className="text-sand" />
+          <SectionLabel index="06" label={story.eyebrow} className="text-sand" />
 
           <div className="mt-6 grid flex-1 items-center gap-6 md:mt-10 md:grid-cols-12 md:gap-6">
             {/* ---- Copy ---- */}
@@ -258,7 +258,7 @@ function StoryStatic() {
   return (
     <section id="story" className="laterite relative z-10 py-24 text-ivory md:py-36">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
-        <SectionLabel index="07" label={story.eyebrow} className="mb-16 text-sand" />
+        <SectionLabel index="06" label={story.eyebrow} className="mb-16 text-sand" />
         <div className="grid gap-16 md:grid-cols-2">
           {chapters.map((c, i) => (
             <article key={c.label} className="grid grid-cols-[1fr_1.2fr] gap-6">
