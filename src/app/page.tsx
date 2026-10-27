@@ -23,12 +23,12 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <RecipeCorner />
         <Story />
         <Brotherhood />
         <Bond />
         <Cricket />
         <Dining />
-        <RecipeCorner />
         <Cinema />
         <Marquee />
         <Locations />
