@@ -1,40 +1,6 @@
 import { bond } from "@/lib/content";
 import { splitEmphasis } from "@/lib/motion";
 
-/** Crossed bats and a ball inside a stitched ring: the brothers, one at each end of the pitch. */
-function Emblem() {
-  return (
-    <svg viewBox="0 0 320 320" className="h-full w-full" role="img" aria-label="Two crossed cricket bats and a ball inside a stitched ring">
-      <circle
-        className="seam-draw"
-        cx="160"
-        cy="160"
-        r="150"
-        pathLength="1"
-        fill="none"
-        stroke="#c4a573"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeDasharray="1"
-        transform="rotate(-90 160 160)"
-      />
-      <circle cx="160" cy="160" r="138" fill="none" stroke="#c4a573" strokeOpacity="0.25" strokeWidth="1" strokeDasharray="2 7" />
-      <g className="bat bat-l" fill="#f3ebdf">
-        <rect x="153" y="30" width="14" height="86" rx="7" />
-        <rect x="139" y="108" width="42" height="170" rx="18" />
-      </g>
-      <g className="bat bat-r" fill="#c9b496">
-        <rect x="153" y="30" width="14" height="86" rx="7" />
-        <rect x="139" y="108" width="42" height="170" rx="18" />
-      </g>
-      <g className="ball-pop">
-        <circle cx="160" cy="236" r="26" fill="#8c211d" />
-        <path d="M138 226c14 6 30 6 44 0M138 246c14-6 30-6 44 0" fill="none" stroke="#f3ebdf" strokeOpacity="0.85" strokeWidth="1.6" strokeLinecap="round" strokeDasharray="3 3" />
-      </g>
-    </svg>
-  );
-}
-
 export default function Bond() {
   return (
     <section className="relative overflow-hidden bg-burgundy-900 py-28 text-ivory md:py-44" aria-label={bond.eyebrow}>
@@ -48,13 +14,7 @@ export default function Bond() {
       </div>
 
       <div className="relative mx-auto grid max-w-[1680px] gap-16 px-5 md:grid-cols-12 md:gap-6 md:px-10">
-        <div className="md:col-span-5 md:col-start-1">
-          <div data-reveal="scale" className="bond-emblem mx-auto aspect-square w-[68vw] max-w-[380px] md:sticky md:top-32 md:w-full">
-            <Emblem />
-          </div>
-        </div>
-
-        <div className="md:col-span-6 md:col-start-7">
+        <div className="md:col-span-9 md:col-start-2">
           <span data-reveal className="eyebrow mb-8 flex items-center gap-4 text-terracotta">
             <span className="h-px w-10 bg-terracotta" />
             {bond.eyebrow}

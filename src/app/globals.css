@@ -270,35 +270,9 @@ html.lenis body {
   transform-origin: center;
   animation: spin 14s linear infinite;
 }
-.seam-draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 2.6s var(--ease-luxe) 0.2s;
-}
-.is-in .seam-draw,
-.seam-draw.is-in {
-  stroke-dashoffset: 0;
-}
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-
-/* Bond emblem: the bats swing together and cross when the emblem scrolls in */
-.bat {
-  transform-origin: 160px 160px;
-  transition: transform 1.8s var(--ease-luxe) 0.15s;
-}
-.bat-l { transform: rotate(-4deg); }
-.bat-r { transform: rotate(4deg); }
-.bond-emblem.is-in .bat-l { transform: rotate(-34deg); }
-.bond-emblem.is-in .bat-r { transform: rotate(34deg); }
-.ball-pop {
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: scale(0);
-  transition: transform 1s var(--ease-luxe) 1.1s;
-}
-.bond-emblem.is-in .ball-pop { transform: scale(1); }
 
 /* Menu: dishes rise in when the category changes */
 .menu-item {
