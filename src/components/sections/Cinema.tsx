@@ -90,7 +90,7 @@ export default function Cinema() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-ink py-24 text-ivory md:py-40"
+      className="relative overflow-hidden bg-ink pb-24 pt-6 text-ivory md:pb-40 md:pt-10"
       aria-label={cinema.eyebrow}
     >
       <div className="cinema-glow pointer-events-none absolute left-1/2 top-1/2 h-[120vw] max-h-[1100px] w-[120vw] max-w-[1100px] -translate-x-1/2 -translate-y-1/2" />

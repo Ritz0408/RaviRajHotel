@@ -2,14 +2,13 @@
 
 import { motion } from "framer-motion";
 import RevealLines from "@/components/ui/RevealLines";
-import RevealImage from "@/components/ui/RevealImage";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { dining } from "@/lib/content";
 import { EASE_LUXE } from "@/lib/motion";
 
 export default function Dining() {
   return (
-    <section id="dining" className="relative overflow-hidden bg-ink py-28 text-ivory md:py-44">
+    <section id="dining" className="relative overflow-hidden bg-ink pb-10 pt-28 text-ivory md:pb-16 md:pt-44">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
         <SectionLabel index="02" label={dining.eyebrow} className="mb-14 text-sand md:mb-20" />
 
@@ -52,15 +51,6 @@ export default function Dining() {
                 </motion.li>
               ))}
             </ul>
-
-            <RevealImage
-              src={dining.image.src}
-              alt={dining.image.alt}
-              position={dining.image.position}
-              sizes="(min-width: 768px) 55vw, 100vw"
-              from="right"
-              className="aspect-[16/9] w-full"
-            />
           </div>
         </div>
       </div>
