@@ -9,6 +9,8 @@ type Props = {
   to: number;
   label: string;
   className?: string;
+  /** Shows a sound toggle (starts muted, as browsers require). */
+  sound?: boolean;
 };
 
 /**
@@ -16,7 +18,7 @@ type Props = {
  * the frame is near the viewport, plays only while mostly visible, and a tap pauses / resumes it.
  * Reduced-motion / data-saver visitors get the first frame and a play button.
  */
-export default function Reel({ src, from = 0, to, label, className = "" }: Props) {
+export default function Reel({ src, from = 0, to, label, className = "", sound = false }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
   const vref = useRef<HTMLVideoElement>(null);
   const [near, setNear] = useState(false);
@@ -24,6 +26,7 @@ export default function Reel({ src, from = 0, to, label, className = "" }: Props
   const [playing, setPlaying] = useState(false);
   const [paused, setPaused] = useState(false);
   const [still, setStill] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
     const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
@@ -51,9 +54,16 @@ export default function Reel({ src, from = 0, to, label, className = "" }: Props
   useEffect(() => {
     const v = vref.current;
     if (!v || !near) return;
-    if (visible && !paused && !still) v.play().catch(() => {});
-    else v.pause();
-  }, [near, visible, paused, still]);
+    v.muted = muted;
+    if (visible && !paused && !still) {
+      v.play().catch(() => {
+        // sound can be refused without a gesture: fall back to muted playback
+        v.muted = true;
+        setMuted(true);
+        v.play().catch(() => {});
+      });
+    } else v.pause();
+  }, [near, visible, paused, still, muted]);
 
   const onTime = useCallback(() => {
     const v = vref.current;
@@ -88,6 +98,19 @@ export default function Reel({ src, from = 0, to, label, className = "" }: Props
         aria-label={label}
         className="absolute inset-0 h-full w-full object-cover"
       />
+      {sound && (
+        <button
+          type="button"
+          onClick={() => setMuted((m) => !m)}
+          aria-label={muted ? "Turn sound on" : "Turn sound off"}
+          className="absolute bottom-4 right-4 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-ivory/40 bg-ink/50 text-ivory transition-colors active:bg-raviraj md:hover:bg-raviraj"
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M4 9v6h4l5 4V5L8 9z" />
+            {muted ? <path d="M17 9l5 6M22 9l-5 6" /> : <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" />}
+          </svg>
+        </button>
+      )}
       <button
         type="button"
         onClick={toggle}

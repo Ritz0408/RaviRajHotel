@@ -259,6 +259,18 @@ export const bond = {
     "One would bowl. The other would bat. Neither ever kept count of who carried whom.",
     "When the light went, they walked home the same way, sharing whatever was left of the day.",
   ],
+  // The owners' own film about the two brothers (site visits, an award, the new branch going up). Clean start to finish.
+  video: {
+    src: asset("/videos/brothers.mp4"),
+    from: 0,
+    to: 32,
+    label: "The two Raviraj brothers: their story, from the first plot of land to the new hall",
+    chip: "Meet the two brothers",
+    titleMr: "दोन भावांच्या संघर्षमय जीवनाची गोष्ट",
+    // PLACEHOLDER English gloss of the Marathi caption — client to confirm wording
+    titleEn: "The story of two brothers, and the road they walked together.",
+    taglineMr: "साथ द्या, सोबत राहा आणि विजयाचा साक्षीदार बना",
+  },
   closing: "Hotel Raviraj is that walk home — made into a place.",
   quote: "A brother is the one who stays at the other end of the pitch.",
 };
