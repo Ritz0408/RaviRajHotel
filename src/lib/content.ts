@@ -183,6 +183,13 @@ export const brotherhood = {
   passage:
     "Cricket was never just a game here. It was evenings on the maidan, arguments over the last over, and brothers who always had each other's back. Hotel Raviraj keeps that spirit at the table — a place for friends who feel like family, and family who are your closest friends.",
   pillars: ["Friendship", "Family", "Togetherness", "Shared memories"],
+  // PLACEHOLDER one-liners for each pillar — client to confirm wording
+  pillarNotes: [
+    "Friends who feel like family.",
+    "Family who are your closest friends.",
+    "One long table, every evening.",
+    "Stories that outlast the match.",
+  ],
   image: media.cricketLawn,
 };
 

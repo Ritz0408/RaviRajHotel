@@ -239,6 +239,11 @@ html.lenis body {
   transform: scale(0.94);
 }
 
+/* Brotherhood badge: slow, transform-only turn */
+.badge-spin {
+  animation: spin 22s linear infinite;
+}
+
 /* Passage: the container only triggers; each word fades up on its own delay (--d) */
 .reveal-ready [data-reveal="words"] {
   transition: none;
@@ -256,7 +261,8 @@ html.lenis body {
 
 /* ---- Cricket: running between the wickets ----
    Everything animates transform only, and pauses while the scene is off screen (data-live="false"). */
-.cricket-scene[data-live="false"] * {
+.cricket-scene[data-live="false"] *,
+.live-scene[data-live="false"] * {
   animation-play-state: paused !important;
 }
 /* Batsman: backlift, then a full swing through the line */
