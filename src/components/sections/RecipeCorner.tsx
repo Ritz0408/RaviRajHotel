@@ -200,8 +200,8 @@ export default function RecipeCorner() {
             </ol>
 
             <div data-reveal className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <a href="#menu" className="btn-primary eyebrow">
-                See the full menu
+              <a href="#locations" className="btn-primary eyebrow">
+                Find a Raviraj near you
               </a>
               <span lang="mr" className="font-marathi text-xl text-champagne md:text-2xl">
                 {brand.slogan.mr}

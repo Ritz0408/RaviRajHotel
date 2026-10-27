@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { brand, brotherhood } from "@/lib/content";
+import { brotherhood } from "@/lib/content";
 
 const ICONS = [
   // friendship: two linked rings
@@ -31,9 +31,6 @@ function Badge() {
  * the passage lighting up word by word, and four pillar cards. All motion is transform/opacity CSS.
  */
 export default function Brotherhood() {
-  const words = brotherhood.passage.split(" ");
-  const step = 0.03; // seconds between words
-
   return (
     <section className="relative overflow-hidden bg-burgundy-900 text-ivory" aria-label="Brotherhood">
       {/* ambient glow + watermark */}
@@ -49,7 +46,7 @@ export default function Brotherhood() {
       <div className="relative mx-auto max-w-[1680px] px-5 py-24 md:px-10 md:py-40">
         <span data-reveal className="eyebrow mb-6 flex items-center gap-4 text-terracotta">
           <span className="h-px w-10 bg-terracotta" />
-          04 — {brotherhood.eyebrow}
+          03 — {brotherhood.eyebrow}
         </span>
         <h2 data-reveal className="display max-w-[16ch] text-[clamp(3rem,8.5vw,9rem)] leading-[0.9]">
           Where <em className="italic text-sand">brotherhood</em> becomes a <span className="text-champagne">tradition.</span>
@@ -84,24 +81,6 @@ export default function Brotherhood() {
                 <path d="M5 9c4 2.5 10 2.5 14 0M5 15c4-2.5 10-2.5 14 0" strokeDasharray="2 2" />
               </svg>
             </div>
-          </div>
-
-          {/* passage */}
-          <div data-reveal="right" className="border border-ivory/15 bg-ink/30 p-6 md:col-span-5 md:p-10">
-            <span lang="mr" className="mb-6 block font-marathi text-lg text-sand/80">
-              {brand.marathi} — बंधुप्रेम
-            </span>
-            <p data-reveal="words" className="display text-[clamp(1.35rem,2.1vw,2.15rem)] leading-[1.28]">
-              {words.map((w, i) => (
-                <span
-                  key={i}
-                  style={{ "--d": `${0.3 + i * step}s` } as React.CSSProperties}
-                  className="word mr-[0.26em] inline-block"
-                >
-                  {w}
-                </span>
-              ))}
-            </p>
           </div>
 
           {/* pillars */}

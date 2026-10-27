@@ -64,29 +64,12 @@ export default function Bond() {
                   </p>
                 </div>
               </div>
-              <p lang="mr" className="mt-8 border-l-2 border-terracotta pl-4 font-marathi text-xl leading-snug text-champagne md:text-2xl">
-                {video.taglineMr}
-              </p>
-              <p className="mt-3 pl-[1.125rem] text-sm leading-relaxed text-sand/70">{video.titleEn}</p>
             </div>
           </div>
 
           {/* the words */}
           <div className="md:col-span-6 md:col-start-7">
-            <div className="space-y-7">
-              {bond.beats.map((b, i) => (
-                <p
-                  key={i}
-                  data-reveal
-                  style={{ "--d": `${i * 0.08}s` } as React.CSSProperties}
-                  className="max-w-[44ch] border-l border-ivory/20 pl-5 text-[1.02rem] leading-[1.85] text-ivory/80 md:text-[1.1rem]"
-                >
-                  {b}
-                </p>
-              ))}
-            </div>
-
-            <p data-reveal className="display mt-12 max-w-[26ch] text-[clamp(1.6rem,3vw,2.6rem)] italic text-champagne md:mt-16">
+            <p data-reveal className="display max-w-[26ch] text-[clamp(1.6rem,3vw,2.6rem)] italic text-champagne">
               {bond.closing}
             </p>
 

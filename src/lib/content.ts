@@ -114,9 +114,7 @@ export const recipes = {
 
 export const nav = [
   { label: "Story", href: "#story" },
-  { label: "Experience", href: "#experience" },
   { label: "Dining", href: "#dining" },
-  { label: "Menu", href: "#menu" },
   { label: "Recipes", href: "#recipes" },
   { label: "Locations", href: "#locations" },
   { label: "Gallery", href: "#gallery" },
