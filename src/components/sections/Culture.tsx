@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import RevealLines from "@/components/ui/RevealLines";
 import RevealImage from "@/components/ui/RevealImage";
+import Reel from "@/components/ui/Reel";
 import SectionLabel from "@/components/ui/SectionLabel";
 import PatternRule from "@/components/ui/PatternRule";
 import { culture } from "@/lib/content";
@@ -50,13 +51,19 @@ export default function Culture() {
           </div>
 
           <div className="relative md:col-span-5 md:col-start-8">
-            <RevealImage
-              src={culture.image.src}
-              alt={culture.image.alt}
-              position="96% 45%"
-              sizes="(min-width: 768px) 40vw, 100vw"
-              className="aspect-[3/4] w-full"
-            />
+            <div data-reveal="scale" className="relative">
+              <Reel
+                src={culture.video.src}
+                from={culture.video.from}
+                to={culture.video.to}
+                label={culture.video.label}
+                className="aspect-[3/4] w-full"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
+              <span className="eyebrow pointer-events-none absolute bottom-4 left-5 text-[0.6rem] text-ivory/85">
+                The hall · every evening
+              </span>
+            </div>
             <div className="mt-6 text-raviraj">
               <PatternRule className="opacity-60" />
             </div>
