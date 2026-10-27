@@ -6,7 +6,8 @@ import { animate, motion, useInView, useReducedMotion } from "framer-motion";
 import RevealLines from "@/components/ui/RevealLines";
 import SectionLabel from "@/components/ui/SectionLabel";
 import PatternRule from "@/components/ui/PatternRule";
-import { brand, story } from "@/lib/content";
+import ThemeNote from "@/components/ui/ThemeNote";
+import { story } from "@/lib/content";
 import { EASE_CURTAIN, EASE_LUXE } from "@/lib/motion";
 
 const chapters = story.chapters;
@@ -120,15 +121,15 @@ export default function Story() {
       <div className="relative flex min-h-[100svh] flex-col overflow-hidden">
         {/* giant Marathi watermark */}
         <div
-          lang="mr"
           aria-hidden
-          className="pointer-events-none absolute -right-[4vw] bottom-[8vh] select-none whitespace-nowrap font-marathi text-[24vw] leading-none text-ivory/[0.04]"
+          className="display pointer-events-none absolute -right-[3vw] bottom-[6vh] select-none whitespace-nowrap text-[26vw] leading-none text-ivory/[0.05]"
         >
-          {brand.marathi}
+          Raviraj
         </div>
 
         <div className="relative mx-auto flex w-full max-w-[1680px] flex-1 flex-col px-5 pb-6 pt-24 md:px-10 md:pb-10 md:pt-28">
           <SectionLabel index="06" label={story.eyebrow} className="text-sand" />
+          <ThemeNote className="mt-5 md:mt-6" />
 
           <div className="mt-6 grid flex-1 items-center gap-6 md:mt-10 md:grid-cols-12 md:gap-6">
             {/* ---- Copy ---- */}
@@ -188,9 +189,7 @@ export default function Story() {
                       <span className="eyebrow text-[0.6rem] text-sand">{c.stat.label}</span>
                     </div>
                   )}
-                  <span lang="mr" className="font-marathi text-2xl text-sand md:text-3xl">
-                    {c.marathi}
-                  </span>
+                  <span className="font-serif text-xl italic text-sand md:text-2xl">{c.tagline}</span>
                 </div>
               </motion.div>
             </div>
@@ -258,7 +257,8 @@ function StoryStatic() {
   return (
     <section id="story" className="laterite relative z-10 py-24 text-ivory md:py-36">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
-        <SectionLabel index="06" label={story.eyebrow} className="mb-16 text-sand" />
+        <SectionLabel index="06" label={story.eyebrow} className="text-sand" />
+        <ThemeNote className="mb-16 mt-5" />
         <div className="grid gap-16 md:grid-cols-2">
           {chapters.map((c, i) => (
             <article key={c.label} className="grid grid-cols-[1fr_1.2fr] gap-6">
@@ -271,9 +271,7 @@ function StoryStatic() {
                 </span>
                 <RevealLines lines={c.lines} className="display mt-4 text-4xl md:text-5xl" />
                 <p className="mt-4 leading-[1.8] text-ivory/80">{c.copy}</p>
-                <p lang="mr" className="mt-4 font-marathi text-2xl text-sand">
-                  {c.marathi}
-                </p>
+                <p className="mt-4 font-serif text-xl italic text-sand">{c.tagline}</p>
               </div>
             </article>
           ))}

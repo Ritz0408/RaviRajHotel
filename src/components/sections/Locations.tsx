@@ -7,6 +7,7 @@ import RevealLines from "@/components/ui/RevealLines";
 import SectionLabel from "@/components/ui/SectionLabel";
 import SplitLetters from "@/components/ui/SplitLetters";
 import DirectionLinks from "@/components/ui/DirectionLinks";
+import ThemeNote from "@/components/ui/ThemeNote";
 import { locations } from "@/lib/content";
 import { EASE_CURTAIN, EASE_LUXE } from "@/lib/motion";
 
@@ -59,7 +60,8 @@ export default function Locations() {
   return (
     <section id="locations" className="laterite relative overflow-hidden py-28 text-ivory md:py-40">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
-        <SectionLabel index="03" label="Discover our locations" className="mb-12 text-sand" />
+        <SectionLabel index="03" label="Discover our locations" className="text-sand" />
+        <ThemeNote className="mb-12 mt-5" />
         <div className="mb-14 flex flex-col justify-between gap-8 md:mb-20 lg:flex-row lg:items-end">
           <RevealLines
             lines={["Discover our", "*locations*."]}

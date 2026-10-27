@@ -56,6 +56,8 @@ export const brand = {
   kind: "Family Restaurant",
   kindMarathi: "फॅमिली रेस्टॉरंट",
   // The restaurant's own slogan, as given by the owners.
+  // Explains the red brick-wall background used on the Story and Locations sections.
+  themeNote: { title: "Raviraj red", text: "The deep laterite-red wall is the signature of every Hotel Raviraj, painted and finished by hand in the old Maharashtrian way." },
   slogan: { mr: "यायला लागतंय, खायला लागतंय", en: "You have to come. You have to eat." },
 };
 
@@ -163,8 +165,8 @@ export const story = {
     {
       label: "The Beginning",
       lines: ["Two brothers,", "*one* promise."],
-      copy: "It started with a simple idea between brothers: a place on the road where every guest is welcomed like family.",
-      marathi: "दोन भाऊ",
+      copy: "It began with a simple idea between two brothers: a place on the road where every guest is welcomed like family.",
+      tagline: "Founded by two brothers",
       stat: { value: 2, label: "Brothers" },
       video: asset("/videos/story/01-brothers.mp4"),
       poster: asset("/videos/story/01-brothers.webp"),
@@ -174,8 +176,8 @@ export const story = {
     {
       label: "Side by Side",
       lines: ["Shoulder to", "*shoulder*."],
-      copy: "Long days, big plans and one rule: whatever comes, they face it together — and they still sit down for the last word.",
-      marathi: "खांद्याला खांदा",
+      copy: "Long days and big plans, shared equally. Whatever the challenge, the two brothers face it together.",
+      tagline: "Partners in every decision",
       video: asset("/videos/brothers.mp4"),
       poster: undefined as string | undefined,
       segment: { from: 15.5, to: 22 },
@@ -184,8 +186,8 @@ export const story = {
     {
       label: "Today",
       lines: ["Three homes,", "*one* bond."],
-      copy: "From Gijawane to Ajra, and a third home on the way — the Raviraj family keeps growing.",
-      marathi: "बंधुप्रेम",
+      copy: "From Gijawane to Ajra, with a third home on the way, the Raviraj family continues to grow.",
+      tagline: "Growing across the Kolhapur district",
       stat: { value: 3, label: "Locations" },
       video: asset("/videos/story/04-today.mp4"),
       poster: asset("/videos/story/04-today.webp"),
