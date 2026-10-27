@@ -40,11 +40,12 @@ function Clip({ c, active, live, index }: { c: Chapter; active: boolean; live: b
     if (!v) return;
     if (active && live) {
       v.preload = "auto";
+      if (c.segment && (v.currentTime < c.segment.from || v.currentTime >= c.segment.to)) v.currentTime = c.segment.from;
       v.play().catch(() => {});
     } else {
       v.pause();
     }
-  }, [active, live]);
+  }, [active, live, c.segment]);
 
   return (
     <motion.div
@@ -64,10 +65,14 @@ function Clip({ c, active, live, index }: { c: Chapter; active: boolean; live: b
       >
         <video
           ref={ref}
-          src={c.video}
+          src={c.segment ? `${c.video}#t=${c.segment.from}` : c.video}
           poster={c.poster}
           muted
-          loop
+          loop={!c.segment}
+          onTimeUpdate={(e) => {
+            const v = e.currentTarget;
+            if (c.segment && v.currentTime >= c.segment.to) v.currentTime = c.segment.from;
+          }}
           playsInline
           preload={index === 0 ? "metadata" : "none"}
           aria-label={c.alt}
@@ -123,7 +128,7 @@ export default function Story() {
         </div>
 
         <div className="relative mx-auto flex w-full max-w-[1680px] flex-1 flex-col px-5 pb-6 pt-24 md:px-10 md:pb-10 md:pt-28">
-          <SectionLabel index="02" label={story.eyebrow} className="text-sand" />
+          <SectionLabel index="07" label={story.eyebrow} className="text-sand" />
 
           <div className="mt-6 grid flex-1 items-center gap-6 md:mt-10 md:grid-cols-12 md:gap-6">
             {/* ---- Copy ---- */}
@@ -194,12 +199,17 @@ export default function Story() {
             <div className="order-1 flex justify-center md:order-2 md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
               <div className="relative w-[50vw] max-w-[440px] md:w-full">
                 {/* offset hairline frame */}
-                <div className="absolute -right-3 -top-3 h-full w-full border border-ivory/25 md:-right-5 md:-top-5" />
-                <div className="relative aspect-[4/5] max-h-[32svh] overflow-hidden bg-ink shadow-[0_40px_80px_-30px_rgba(0,0,0,0.7)] md:max-h-[64svh]">
+                <div className="absolute -right-3 -top-3 h-full w-full border border-champagne/60 md:-right-5 md:-top-5" />
+                <div className="relative aspect-[4/5] max-h-[42svh] overflow-hidden bg-ink shadow-[0_0_0_1px_rgba(196,165,115,0.55),0_40px_80px_-30px_rgba(0,0,0,0.7)] md:max-h-[64svh]">
                   {chapters.map((ch, i) => (
                     <Clip key={ch.video} c={ch} index={i} active={i === active} live={live} />
                   ))}
                   <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
+                  {/* owners spotlight: this section is only about the two brothers */}
+                  <span className="eyebrow absolute left-3 top-3 z-10 flex items-center gap-2 border border-champagne/70 bg-ink/60 px-3 py-2 text-[0.55rem] text-champagne">
+                    <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
+                    The owners
+                  </span>
                   <span className="eyebrow absolute bottom-4 left-4 z-10 text-[0.58rem] text-ivory/80">
                     Raviraj · {c.label}
                   </span>
@@ -213,7 +223,7 @@ export default function Story() {
             <div className="relative h-px bg-ivory/20">
               <span style={{ transform: `scaleX(${fill})` }} className="absolute inset-0 origin-left bg-champagne transition-transform duration-700 ease-[var(--ease-luxe)]" />
             </div>
-            <ol className="mt-4 grid grid-cols-4">
+            <ol className="mt-4 grid" style={{ gridTemplateColumns: `repeat(${chapters.length}, minmax(0, 1fr))` }}>
               {chapters.map((ch, i) => (
                 <li key={ch.label} className="relative"><button type="button" onClick={() => pick(i)} aria-label={ch.label} className="absolute -top-8 left-0 right-0 h-10" />
                   <span
@@ -248,12 +258,12 @@ function StoryStatic() {
   return (
     <section id="story" className="laterite relative z-10 py-24 text-ivory md:py-36">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
-        <SectionLabel index="02" label={story.eyebrow} className="mb-16 text-sand" />
+        <SectionLabel index="07" label={story.eyebrow} className="mb-16 text-sand" />
         <div className="grid gap-16 md:grid-cols-2">
           {chapters.map((c, i) => (
             <article key={c.label} className="grid grid-cols-[1fr_1.2fr] gap-6">
               <div className="relative aspect-[4/5] overflow-hidden">
-                <Image src={c.poster} alt={c.alt} fill sizes="25vw" className="object-cover" />
+                {c.poster ? (<Image src={c.poster} alt={c.alt} fill sizes="25vw" className="object-cover" />) : (<video src={`${c.video}#t=${c.segment?.from ?? 0.1}`} muted playsInline preload="metadata" aria-label={c.alt} className="absolute inset-0 h-full w-full object-cover" />)}
               </div>
               <div>
                 <span className="eyebrow text-sand">

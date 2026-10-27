@@ -11,7 +11,7 @@ export default function Dining() {
   return (
     <section id="dining" className="relative overflow-hidden bg-ink py-28 text-ivory md:py-44">
       <div className="mx-auto max-w-[1680px] px-5 md:px-10">
-        <SectionLabel index="04" label={dining.eyebrow} className="mb-14 text-sand md:mb-20" />
+        <SectionLabel index="03" label={dining.eyebrow} className="mb-14 text-sand md:mb-20" />
 
         <div className="grid gap-16 md:grid-cols-12 md:gap-6">
           <div className="flex flex-col justify-between gap-14 md:col-span-12">

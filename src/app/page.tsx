@@ -24,7 +24,6 @@ export default function Home() {
       <main>
         <Hero />
         <RecipeCorner />
-        <Story />
         <Brotherhood />
         <Bond />
         <Cricket />
@@ -34,6 +33,7 @@ export default function Home() {
         <Locations />
         <Gallery />
         <Visit />
+        <Story />
       </main>
       <Footer />
       <RevealObserver />

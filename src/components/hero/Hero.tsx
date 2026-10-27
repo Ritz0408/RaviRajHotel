@@ -135,7 +135,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: EASE_LUXE, delay: 1.1 }}
           >
-            <a href="#story" onClick={go("#story")} className="btn-primary eyebrow">
+            <a href="#brothers" onClick={go("#brothers")} className="btn-primary eyebrow">
               Explore hotel
             </a>
             <a href="#locations" onClick={go("#locations")} className="link-line eyebrow self-start text-ivory sm:self-auto">

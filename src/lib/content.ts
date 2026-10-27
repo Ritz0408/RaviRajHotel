@@ -114,10 +114,10 @@ export const recipes = {
 
 export const nav = [
   { label: "Recipes", href: "#recipes" },
-  { label: "Story", href: "#story" },
   { label: "Dining", href: "#dining" },
   { label: "Locations", href: "#locations" },
   { label: "Gallery", href: "#gallery" },
+  { label: "Story", href: "#story" },
 ];
 
 /**
@@ -157,6 +157,8 @@ export const hero = {
  */
 export const story = {
   eyebrow: "The Raviraj Story",
+  // Owners only: the two brothers behind Hotel Raviraj. Chapter 2 plays a window of the owners' own film
+  // (the two of them seated together, 15.5s–22s); the others are the clips cut from the family's reels.
   chapters: [
     {
       label: "The Beginning",
@@ -166,25 +168,18 @@ export const story = {
       stat: { value: 2, label: "Brothers" },
       video: asset("/videos/story/01-brothers.mp4"),
       poster: asset("/videos/story/01-brothers.webp"),
-      alt: "Two of the Raviraj family in front of the Hotel Raviraj sign",
+      segment: null as { from: number; to: number } | null,
+      alt: "The two Raviraj brothers in front of the Hotel Raviraj sign",
     },
     {
-      label: "The Kitchen",
-      lines: ["Cooked like", "it's *home*."],
-      copy: "Real fire, iron kadais and recipes from our own homes — Kolhapuri spice, made fresh every day.",
-      marathi: "घरची चव",
-      video: asset("/videos/story/02-kitchen.mp4"),
-      poster: asset("/videos/story/02-kitchen.webp"),
-      alt: "A chicken masala cooking in a kadai over an open flame in the Raviraj kitchen",
-    },
-    {
-      label: "The Family",
-      lines: ["Every table,", "a *family*."],
-      copy: "Long tables, full thalis and servers in Raviraj jerseys — evenings here are loud, warm and shared.",
-      marathi: "आपली माणसं",
-      video: asset("/videos/story/03-family.mp4"),
-      poster: asset("/videos/story/03-family.webp"),
-      alt: "Guests sharing a meal at long tables in the Raviraj dining hall",
+      label: "Side by Side",
+      lines: ["Shoulder to", "*shoulder*."],
+      copy: "Long days, big plans and one rule: whatever comes, they face it together — and they still sit down for the last word.",
+      marathi: "खांद्याला खांदा",
+      video: asset("/videos/brothers.mp4"),
+      poster: undefined as string | undefined,
+      segment: { from: 15.5, to: 22 },
+      alt: "The two Raviraj brothers sitting side by side, talking",
     },
     {
       label: "Today",
@@ -194,11 +189,11 @@ export const story = {
       stat: { value: 3, label: "Locations" },
       video: asset("/videos/story/04-today.mp4"),
       poster: asset("/videos/story/04-today.webp"),
-      alt: "Ribbon cutting at the opening of a new Hotel Raviraj",
+      segment: null,
+      alt: "The brothers cutting the ribbon at the opening of a new Hotel Raviraj",
     },
   ],
 };
-
 export const experience = {
   eyebrow: "The Raviraj Experience",
   title: ["Every corner", "tells a *story*."],

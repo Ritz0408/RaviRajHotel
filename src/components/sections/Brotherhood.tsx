@@ -46,7 +46,7 @@ export default function Brotherhood() {
       <div className="relative mx-auto max-w-[1680px] px-5 py-24 md:px-10 md:py-40">
         <span data-reveal className="eyebrow mb-6 flex items-center gap-4 text-terracotta">
           <span className="h-px w-10 bg-terracotta" />
-          03 — {brotherhood.eyebrow}
+          02 — {brotherhood.eyebrow}
         </span>
         <h2 data-reveal className="display max-w-[16ch] text-[clamp(3rem,8.5vw,9rem)] leading-[0.9]">
           Where <em className="italic text-sand">brotherhood</em> becomes a <span className="text-champagne">tradition.</span>
