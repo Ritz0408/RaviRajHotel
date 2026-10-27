@@ -52,12 +52,7 @@ export default function Bond() {
                     <span className="h-1.5 w-1.5 rounded-full bg-raviraj" />
                     {video.chip}
                   </span>
-                  <p
-                    lang="mr"
-                    className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-5 pr-20 font-marathi text-xl leading-snug text-ivory drop-shadow md:p-7 md:pr-24 md:text-2xl"
-                  >
-                    {video.titleMr}
-                  </p>
+
                 </div>
               </div>
             </div>

@@ -244,10 +244,6 @@ export const bond = {
     to: 32,
     label: "The two Raviraj brothers: their story, from the first plot of land to the new hall",
     chip: "Meet the two brothers",
-    titleMr: "दोन भावांच्या संघर्षमय जीवनाची गोष्ट",
-    // PLACEHOLDER English gloss of the Marathi caption — client to confirm wording
-    titleEn: "The story of two brothers, and the road they walked together.",
-    taglineMr: "साथ द्या, सोबत राहा आणि विजयाचा साक्षीदार बना",
   },
   closing: "Hotel Raviraj is that walk home — made into a place.",
   quote: "A brother is the one who stays at the other end of the pitch.",
