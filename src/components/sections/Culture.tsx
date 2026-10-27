@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import RevealLines from "@/components/ui/RevealLines";
-import RevealImage from "@/components/ui/RevealImage";
 import Reel from "@/components/ui/Reel";
 import SectionLabel from "@/components/ui/SectionLabel";
 import PatternRule from "@/components/ui/PatternRule";
@@ -66,18 +65,6 @@ export default function Culture() {
             </div>
             <div className="mt-6 text-raviraj">
               <PatternRule className="opacity-60" />
-            </div>
-            <div className="absolute -left-2 bottom-24 w-[46%] border-[10px] border-offwhite bg-offwhite md:-left-24">
-              <RevealImage
-                src={culture.detail.src}
-                alt={culture.detail.alt}
-                position={culture.detail.position}
-                sizes="(min-width: 768px) 20vw, 50vw"
-                from="left"
-                delay={0.2}
-                parallax={0.15}
-                className="aspect-square w-full"
-              />
             </div>
           </div>
         </div>

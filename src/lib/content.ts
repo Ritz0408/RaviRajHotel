@@ -377,7 +377,6 @@ export const culture = {
   // The hall on a busy evening: red laterite walls, tiled roof, chandeliers. Loops 8s–17.5s, the clean interior stretch
   // (the start is the car park outside, and a bright flash transition follows at ~18s).
   video: { src: asset("/videos/reels/r3.mp4"), from: 8, to: 17.5, label: "The Hotel Raviraj dining hall on a busy evening" },
-  detail: media.redWalls,
 };
 
 // PLACEHOLDER testimonials — replace with real guest reviews before launch
