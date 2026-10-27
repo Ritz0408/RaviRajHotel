@@ -265,29 +265,6 @@ html.lenis body {
 .live-scene[data-live="false"] * {
   animation-play-state: paused !important;
 }
-/* Batsman: backlift, then a full swing through the line */
-.cr-bat {
-  transform-origin: 198px 135px;
-  animation: cr-bat 6s infinite;
-}
-/* Bowler's arm windmills over and releases */
-.cr-arm {
-  transform-origin: 820px 108px;
-  animation: cr-arm 6s infinite;
-}
-.cr-ball {
-  animation: cr-ball 6s linear infinite;
-}
-.cr-six {
-  transform-origin: 700px 80px;
-  animation: cr-six 6s infinite;
-}
-.cr-bowler {
-  animation: cr-bowler 6s ease-out infinite;
-}
-.cr-flash {
-  animation: cr-flash 6s infinite;
-}
 .ball-spin {
   transform-box: fill-box;
   transform-origin: center;
@@ -302,49 +279,6 @@ html.lenis body {
 .seam-draw.is-in {
   stroke-dashoffset: 0;
 }
-@keyframes cr-bat {
-  0%, 16% { transform: rotate(150deg); animation-timing-function: ease-out; }
-  44% { transform: rotate(168deg); animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.4); }
-  52% { transform: rotate(-28deg); }
-  66% { transform: rotate(-125deg); animation-timing-function: ease-in-out; }
-  90%, 100% { transform: rotate(150deg); }
-}
-@keyframes cr-arm {
-  0%, 4% { transform: rotate(0deg); animation-timing-function: cubic-bezier(0.4, 0, 0.3, 1); }
-  17% { transform: rotate(-250deg); }
-  96% { transform: rotate(-250deg); animation-timing-function: linear; }
-  100% { transform: rotate(-360deg); }
-}
-@keyframes cr-bowler {
-  0% { transform: translate3d(70px, 0, 0); }
-  17%, 90% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(70px, 0, 0); }
-}
-@keyframes cr-ball {
-  0%, 16% { transform: translate3d(786px, 96px, 0); opacity: 0; }
-  17% { transform: translate3d(786px, 96px, 0); opacity: 1; }
-  30% { transform: translate3d(640px, 150px, 0); }
-  39% { transform: translate3d(480px, 196px, 0); }
-  47% { transform: translate3d(330px, 152px, 0); }
-  51.5% { transform: translate3d(222px, 168px, 0); }
-  56% { transform: translate3d(330px, 96px, 0); }
-  62% { transform: translate3d(540px, 34px, 0); }
-  70% { transform: translate3d(760px, 14px, 0); }
-  80% { transform: translate3d(1000px, 56px, 0); opacity: 1; }
-  82%, 100% { transform: translate3d(1040px, 70px, 0); opacity: 0; }
-}
-@keyframes cr-six {
-  0%, 54% { opacity: 0; transform: scale(0.4) rotate(-6deg); }
-  60% { opacity: 1; transform: scale(1.15) rotate(-6deg); }
-  64%, 84% { opacity: 1; transform: scale(1) rotate(-6deg); }
-  92%, 100% { opacity: 0; transform: scale(1) rotate(-6deg); }
-}
-@keyframes cr-flash {
-  0%, 50% { opacity: 0; }
-  52% { opacity: 0.9; }
-  58%, 100% { opacity: 0; }
-}
-
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

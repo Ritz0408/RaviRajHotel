@@ -37,105 +37,6 @@ function Icon({ name }: { name: IconName }) {
   );
 }
 
-/** A six, side-on: bowler runs in and delivers, the batsman (his brother) swings, the ball clears the boundary. Transform-only CSS animation. */
-function Pitch() {
-  return (
-    <div
-      data-live-scene
-      data-live="false"
-      className="cricket-scene relative overflow-hidden border border-ivory/10 bg-[#140a09]"
-    >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(176,86,47,0.3),transparent_65%)]" />
-      <svg viewBox="0 24 1000 224" className="relative block h-auto w-full" role="img" aria-label="Side view of a cricket match: a bowler delivers, his brother the batsman swings, and the ball sails over the boundary for six">
-        {/* stadium floodlights + distant crowd */}
-        <g fill="#f3ebdf" fillOpacity="0.5">
-          {[60, 90, 150, 330, 410, 520, 600, 690, 770, 880, 930].map((x, i) => (
-            <circle key={x} cx={x} cy={178 + (i % 3) * 5} r="2.4" />
-          ))}
-        </g>
-        {/* ground */}
-        <rect x="0" y="200" width="1000" height="60" fill="#241209" />
-        <rect x="70" y="200" width="860" height="9" fill="#5a3a22" />
-        <path d="M0 200h1000" stroke="#f3ebdf" strokeOpacity="0.25" />
-        <path d="M250 200v10M880 200v10" stroke="#f3ebdf" strokeOpacity="0.55" strokeWidth="2" />
-
-        {/* wicketkeeper, crouched behind the stumps */}
-        <g>
-          <path d="M60 200v-26q0-22 18-22l16 8v40z" fill="#c9b496" />
-          <circle cx="78" cy="148" r="9" fill="#c9a27a" />
-          <path d="M69 148a9 9 0 0 1 18 0z" fill="#3f1012" />
-          <circle cx="100" cy="176" r="7" fill="#f3ebdf" />
-        </g>
-        {/* stumps */}
-        <g fill="#f3ebdf">
-          <rect x="110" y="128" width="4" height="72" rx="2" />
-          <rect x="120" y="128" width="4" height="72" rx="2" />
-          <rect x="130" y="128" width="4" height="72" rx="2" />
-          <rect x="110" y="123" width="12" height="3" rx="1.5" fill="#c4a573" />
-          <rect x="122" y="123" width="12" height="3" rx="1.5" fill="#c4a573" />
-        </g>
-
-        {/* batsman — brother one */}
-        <g>
-          <rect x="159" y="150" width="11" height="50" rx="4" fill="#f3ebdf" />
-          <rect x="180" y="150" width="11" height="50" rx="4" fill="#f3ebdf" />
-          <rect x="156" y="196" width="18" height="6" rx="3" fill="#140a09" />
-          <rect x="178" y="196" width="18" height="6" rx="3" fill="#140a09" />
-          <rect x="157" y="100" width="36" height="54" rx="13" fill="#8c211d" />
-          <path d="M176 110L198 135" stroke="#c9a27a" strokeWidth="7" strokeLinecap="round" />
-          <circle cx="178" cy="86" r="11" fill="#c9a27a" />
-          <path d="M166 86a12 12 0 0 1 24 0v2h-24z" fill="#3f1012" />
-          <rect x="186" y="85" width="11" height="3" rx="1.5" fill="#3f1012" />
-          <g className="cr-bat">
-            <rect x="194.5" y="135" width="7" height="24" rx="3" fill="#c9b496" />
-            <rect x="190" y="158" width="16" height="50" rx="4" fill="#e8d5a8" />
-            <rect x="196.5" y="158" width="3" height="50" fill="#c4a573" fillOpacity="0.6" />
-          </g>
-        </g>
-
-        {/* bowler — brother two, runs in and delivers */}
-        <g className="cr-bowler">
-          <rect x="811" y="152" width="10" height="48" rx="4" fill="#f3ebdf" />
-          <rect x="826" y="152" width="10" height="48" rx="4" fill="#f3ebdf" />
-          <rect x="808" y="196" width="16" height="6" rx="3" fill="#140a09" />
-          <rect x="824" y="196" width="16" height="6" rx="3" fill="#140a09" />
-          <rect x="806" y="100" width="34" height="54" rx="13" fill="#b0562f" />
-          <path d="M812 112L800 134" stroke="#c9a27a" strokeWidth="7" strokeLinecap="round" />
-          <circle cx="823" cy="86" r="10" fill="#c9a27a" />
-          <path d="M813 85a10 10 0 0 1 20 0z" fill="#f3ebdf" />
-          <rect x="806" y="84" width="9" height="3" rx="1.5" fill="#f3ebdf" />
-          <g className="cr-arm">
-            <path d="M820 108v42" stroke="#c9a27a" strokeWidth="7" strokeLinecap="round" />
-          </g>
-        </g>
-
-        {/* contact flash */}
-        <g className="cr-flash" fill="none" stroke="#c4a573">
-          <circle cx="222" cy="168" r="9" strokeWidth="2" />
-          <circle cx="222" cy="168" r="20" strokeWidth="1" strokeDasharray="3 5" />
-        </g>
-
-        {/* the ball: bounce, strike, six */}
-        <g className="cr-ball">
-          <circle r="6" fill="#8c211d" />
-          <path d="M-4.5 -2c3 2 6 2 9 0" stroke="#f3ebdf" strokeWidth="1" fill="none" />
-        </g>
-
-        <g className="cr-six">
-          <text x="700" y="96" textAnchor="middle" fontSize="76" fill="#c4a573" className="font-serif italic">
-            SIX!
-          </text>
-        </g>
-
-        <g className="font-sans" fontSize="11" letterSpacing="3" fill="#f3ebdf" fillOpacity="0.55" textAnchor="middle">
-          <text x="176" y="232">BROTHER ONE</text>
-          <text x="823" y="232">BROTHER TWO</text>
-        </g>
-      </svg>
-      <p className="eyebrow absolute left-4 top-3 text-[0.55rem] text-ivory/50">One last over</p>
-    </div>
-  );
-}
 export default function Cricket() {
   return (
     <section id="cricket" className="relative overflow-hidden bg-ink py-28 text-ivory md:py-44" aria-label={cricket.eyebrow}>
@@ -168,10 +69,6 @@ export default function Cricket() {
           <p data-reveal style={{ "--d": "0.1s" } as React.CSSProperties} className="self-end leading-[1.85] text-sand/80 md:col-span-4">
             {cricket.copy}
           </p>
-        </div>
-
-        <div data-reveal className="mt-14 md:mt-24">
-          <Pitch />
         </div>
 
         {/* Memorable moments */}
