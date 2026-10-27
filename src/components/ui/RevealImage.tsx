@@ -99,8 +99,6 @@ export default function RevealImage({
             style={{ objectPosition: position }}
             className="object-cover"
           />
-          {/* warm grade as a flat overlay — cheaper than a CSS filter on a moving image */}
-          <div className="absolute inset-0 bg-[#3a1a0c]/[0.12] mix-blend-multiply" />
         </motion.div>
       </motion.div>
       {/* gentle vignette so daylight photographs sit in the dusk palette */}

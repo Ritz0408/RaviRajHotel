@@ -15,23 +15,23 @@ export type Media = { src: string; alt: string; position?: string };
 
 export const media = {
   villageArch: {
-    src: photo("village-arch.jpg"),
+    src: photo("village-arch.webp"),
     alt: "The red arch of Hotel Raviraj framed by sculptures of a farmer and a woman carrying a basket",
     position: "50% 55%",
   },
   entranceArch: {
-    src: photo("entrance-arch.jpg"),
-    alt: "Hotel Raviraj entrance arch with white bullock sculptures and cricketer statues beyond",
+    src: photo("entrance-arch.webp"),
+    alt: "The Hotel Raviraj entrance arch at night, with white bullock sculptures and the red sign above",
     position: "50% 50%",
   },
   cricketLawn: {
-    src: photo("cricket-lawn.jpg"),
-    alt: "Cricketer statues on the lawn beneath the sign 'The Bonding of Brother's Love'",
-    position: "50% 60%",
+    src: photo("cricket-lawn.webp"),
+    alt: "Three cricketer statues on the lit lawn at night beneath the Hotel Raviraj sign",
+    position: "50% 55%",
   },
   diningHall: {
-    src: photo("dining-hall.jpg"),
-    alt: "The Hotel Raviraj dining hall under a tiled roof with chandeliers and cricket photographs",
+    src: photo("dining-hall.webp"),
+    alt: "The Hotel Raviraj dining hall under a tiled roof with chandeliers and painted red walls",
     position: "50% 50%",
   },
   // a sign-free crop of the hand-painted laterite wall
